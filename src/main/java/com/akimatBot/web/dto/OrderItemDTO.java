@@ -3,10 +3,7 @@ package com.akimatBot.web.dto;
 import com.akimatBot.entity.custom.Food;
 import com.akimatBot.entity.custom.FoodOrder;
 import com.akimatBot.entity.enums.OrderItemStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +15,7 @@ import java.util.TreeMap;
 @Setter
 @Getter
 @NoArgsConstructor
+@ToString
 public class OrderItemDTO  implements Serializable {
 
     private long id;

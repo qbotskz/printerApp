@@ -2,8 +2,10 @@ package com.akimatBot.web.controllers.printer;
 
 
 
+import com.akimatBot.entity.custom.PDFFilesToPrint;
 import com.akimatBot.entity.custom.PrintPayment;
 import com.akimatBot.entity.custom.PrintPrecheck;
+import com.akimatBot.repository.repos.PDFFilesToPrintRepo;
 import com.akimatBot.repository.repos.PrintPaymentRepo;
 import com.akimatBot.repository.repos.PrintPrecheckRepo;
 import com.akimatBot.web.dto.*;
@@ -12,10 +14,21 @@ import com.akimatBot.web.websocets.entities.OrderItemDeleteEntity;
 import com.akimatBot.web.websocets.entities.OrderItemDeleteEntityRepo;
 import com.akimatBot.web.websocets.entities.PrintKitchenEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +48,12 @@ public class PrinterController {
     @Autowired
     PrintPaymentRepo printPaymentRepo;
 
+
+
+    @Autowired
+    PDFFilesToPrintRepo pdfFilesToPrintRepo;
+
+    private static final String path = "D:/qrestoran/printerDocuments/";
 
     @GetMapping("/getAvailablePrintKitchens")
     public ResponseEntity<Object> getAllTable(){
@@ -109,6 +128,74 @@ public class PrinterController {
     public void updatePayment(@RequestBody PrintPaymentDTO printPaymentDTO){
         System.out.println(printPaymentDTO.toString());
         printPaymentRepo.delete(new PrintPayment(printPaymentDTO.getId()));
+    }
+
+//    @RequestMapping(path = "/getReportDaily", method = RequestMethod.GET)
+//    public ResponseEntity<Resource> download(String param) throws IOException {
+//
+//        // ...
+//        File file = PDFGenerator.getReportDaily();
+//        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+//
+//        return ResponseEntity.ok()
+////                .headers(headers)
+//                .contentLength(file.length())
+//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .body(resource);
+//    }
+
+//    @RequestMapping(path = "/getReportDaily", method = RequestMethod.GET)
+//    public ResponseEntity<Resource> getReportDaily() throws IOException {
+//
+//        File file = pdfGenerator.getReportDaily(1234);
+//
+//        Path path = Paths.get(file.getAbsolutePath());
+//        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+//
+//        HttpHeaders header = new HttpHeaders();
+//        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName());
+//        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+//        header.add("Pragma", "no-cache");
+//        header.add("Expires", "0");
+//
+//
+//        return ResponseEntity.ok()
+//                .headers(header)
+//                .contentLength(file.length())
+//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .body(resource);
+//    }
+
+    @GetMapping("/getNotPrintedFile")
+    public ResponseEntity<Resource> getNotPrintedFile() throws IOException {
+        PDFFilesToPrint pdfFilesToPrint = pdfFilesToPrintRepo.getNotPrintedFirst();
+        if (pdfFilesToPrint != null) {
+
+            File file = new File(path + pdfFilesToPrint.getFileName());
+
+            Path path = Paths.get(file.getAbsolutePath());
+            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
+            HttpHeaders header = new HttpHeaders();
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName());
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+
+            return ResponseEntity.ok()
+                    .headers(header)
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        }
+        else return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
+    }
+
+    @PostMapping("updateNotPrintedFile")
+    public void updateNotPrintedFile(@RequestParam String fileName){
+        pdfFilesToPrintRepo.printedByName(fileName);
+        System.out.println(fileName);
     }
 
 }

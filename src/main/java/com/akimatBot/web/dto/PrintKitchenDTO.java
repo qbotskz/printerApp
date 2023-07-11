@@ -1,9 +1,6 @@
 package com.akimatBot.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.TreeMap;
 @Setter
 @Getter
 @NoArgsConstructor
+@ToString
 public class PrintKitchenDTO {
 
     long id;
@@ -25,16 +23,4 @@ public class PrintKitchenDTO {
     long deskNumber;
 
 
-    @Override
-    public String toString() {
-        return "PrintKitchenDTO{" +
-                "id=" + id +
-                ", items=" + items +
-                ", orderId=" + orderId +
-                ", createdDate=" + createdDate +
-                ", waiterName='" + waiterName + '\'' +
-                ", hallName='" + hallName + '\'' +
-                ", deskNumber=" + deskNumber +
-                '}';
-    }
 }

@@ -77,6 +77,26 @@ public class OrderService {
         this.orderItemDeleteEntityRepo = orderItemDeleteEntityRepo;
     }
 
+    public ReportDailyWithTaxDTO getReportDailyWithTaxDTO(long code) {
+        ReportDailyWithTaxDTO reportDailyWithTaxDTO = new ReportDailyWithTaxDTO();
+        GeneralShift generalShift = generalShiftService.getOpenedShift();
+        reportDailyWithTaxDTO.setGeneralShift(generalShift.getDTO());
+        reportDailyWithTaxDTO.setCurrentEmployee(employeeService.findByCode(code).getDTO());
+        reportDailyWithTaxDTO.setTotal(orderRepo.getTotalBetween(generalShift.getOpeningTime(), new Date()));
+//        List<PaymentTypeReport> objects = orderRepo.getTotalForPaymentTypesJPQL(generalShift.getOpeningTime(), new Date());
+//        reportDailyWithTaxDTO.setPaymentTypeReports(getDTO(orderRepo.getTotalForPaymentTypes(generalShift.getOpeningTime(), new Date())));
+        reportDailyWithTaxDTO.setPaymentTypeReports(getDTO(orderRepo.getTotalForPaymentTypesJPQL(generalShift.getOpeningTime(), new Date())));
+        return reportDailyWithTaxDTO;
+    }
+    private List<PaymentTypeReportDTO> getDTO(List<PaymentTypeReport> totalForPaymentTypesJPQL) {
+
+        List<PaymentTypeReportDTO> dtos = new ArrayList<>();
+        for (PaymentTypeReport paymentTypeReport : totalForPaymentTypesJPQL){
+            dtos.add(paymentTypeReport.getDTO());
+        }
+
+        return dtos;
+    }
 
     public FoodOrder findById(long id) {
         return orderRepo.findOrderById(id);

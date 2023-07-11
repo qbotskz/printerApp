@@ -1,6 +1,7 @@
 package com.akimatBot.repository.repos;
 
 import com.akimatBot.entity.custom.FoodOrder;
+import com.akimatBot.entity.custom.PaymentTypeReport;
 import com.akimatBot.entity.enums.OrderStatus;
 import com.akimatBot.entity.enums.OrderType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,6 +41,12 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 //        calendar.add(Calendar.MINUTE, -minute);
 //        return getActuallyOrders(chatId, calendar.getTime());
 //    }
+
+    @Query("select new PaymentTypeReport(pt, sum(p.amount), count(p) ) from PaymentType pt left join Payment p on pt.id = p.paymentType.id " +
+            " where p.cheque.id in " +
+            "(select fo.cheque.id from FoodOrder fo where fo.createdDate between ?1 and ?2 and fo.orderStatus = 2) group by pt")
+
+    List<PaymentTypeReport> getTotalForPaymentTypesJPQL(Date openingTime, Date closingTime);
 
 
 //    @Query("select o from OrderOfBooks o where DATEDIFF(minute,0,current_timestamp)+15 ")
