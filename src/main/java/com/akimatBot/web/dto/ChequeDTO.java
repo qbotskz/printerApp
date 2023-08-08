@@ -1,6 +1,7 @@
 package com.akimatBot.web.dto;
 
 import com.akimatBot.entity.custom.FoodOrder;
+import com.akimatBot.entity.custom.Payment;
 import com.akimatBot.entity.custom.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class ChequeDTO {
     private long id;
     private double total;
 
-    private double prepayment;
+    private PaymentDTO prepayment;
 
     private double discount;
     private double service;
@@ -64,8 +65,5 @@ public class ChequeDTO {
     public ChequeDTO() {
 
     }
-
-
-
 
 }

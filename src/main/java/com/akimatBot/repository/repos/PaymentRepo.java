@@ -19,4 +19,7 @@ public interface PaymentRepo extends JpaRepository<Payment, Long> {
     double getTotalOfCheque(long id);
 
     List<Payment> findAllByCheque(Cheque cheque);
+
+    List<Payment> findAllByChequeAndPrepaymentFalse(Cheque cheque);
+
 }

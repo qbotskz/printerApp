@@ -860,7 +860,7 @@ public class OrderService {
     @Transactional
     public Cheque editPrepayment(long chequeId, double prepayment){
         Cheque cheque = chequeRepo.findById(chequeId);
-        cheque.setPrepayment(prepayment);
+//        cheque.setPrepayment(prepayment);
         return chequeRepo.save(cheque);
     }
 
