@@ -57,7 +57,7 @@ public class PrintKitchenEntity {
     public static List<OrderItemDTO> getItemsStr(List<OrderItem> orderItems){
         List<OrderItemDTO> dtos = new ArrayList<>();
         for (OrderItem orderItem : orderItems){
-            dtos.add(orderItem.getOrderItemDTO(Language.ru));
+            dtos.add(orderItem.getOrderItemDTO(Language.en));
         }
         return dtos;
 //        return new Gson().toJson(dtos);

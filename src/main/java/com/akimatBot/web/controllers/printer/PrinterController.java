@@ -130,41 +130,6 @@ public class PrinterController {
         printPaymentRepo.delete(new PrintPayment(printPaymentDTO.getId()));
     }
 
-//    @RequestMapping(path = "/getReportDaily", method = RequestMethod.GET)
-//    public ResponseEntity<Resource> download(String param) throws IOException {
-//
-//        // ...
-//        File file = PDFGenerator.getReportDaily();
-//        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-//
-//        return ResponseEntity.ok()
-////                .headers(headers)
-//                .contentLength(file.length())
-//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//                .body(resource);
-//    }
-
-//    @RequestMapping(path = "/getReportDaily", method = RequestMethod.GET)
-//    public ResponseEntity<Resource> getReportDaily() throws IOException {
-//
-//        File file = pdfGenerator.getReportDaily(1234);
-//
-//        Path path = Paths.get(file.getAbsolutePath());
-//        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-//
-//        HttpHeaders header = new HttpHeaders();
-//        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName());
-//        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-//        header.add("Pragma", "no-cache");
-//        header.add("Expires", "0");
-//
-//
-//        return ResponseEntity.ok()
-//                .headers(header)
-//                .contentLength(file.length())
-//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//                .body(resource);
-//    }
 
     @GetMapping("/getNotPrintedFile")
     public ResponseEntity<Resource> getNotPrintedFile() throws IOException {

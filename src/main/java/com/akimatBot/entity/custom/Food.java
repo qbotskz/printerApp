@@ -1,6 +1,7 @@
 package com.akimatBot.entity.custom;
 
 import com.akimatBot.entity.enums.Language;
+import com.akimatBot.repository.TelegramBotRepositoryProvider;
 import com.akimatBot.utils.DateUtil;
 import com.akimatBot.web.dto.FoodDTO;
 import com.akimatBot.web.dto.KitchenDTO;
@@ -41,12 +42,21 @@ public class Food {
     private String photo_url;
 
     private Boolean activated;
-//    @Column(nullable = true)
+    //    @Column(nullable = true)
 //    private boolean hasSpecialOffer;
 //    @Column(nullable = true)
     private Integer specialOfferSum;
 
     private Integer cashBackPercentage;
+
+    private String nameKitchen;
+    private String article;
+
+    private Long countOrders;
+
+//    public void addCountOfOrders(){
+//        TelegramBotRepositoryProvider.getFoodRepository().addCountOfOrders(this.id);
+//    }
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -64,9 +74,10 @@ public class Food {
         if(lang == Language.ru){
             return nameRu;
         }
-        else {
+        else if (lang == Language.kz){
             return nameKz;
         }
+        return getNameKitchen();
     }
 //    public Integer getFoodPrice(City city){
 //        if(city == City.ALMATY){
