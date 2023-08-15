@@ -36,21 +36,26 @@ public interface ChequeRepo extends JpaRepository<Cheque, Long> {
     @Query("select g.foodOrder.cheque from Guest g where g.id = ?1")
     Cheque getByGuest(long guestId);
 
-    @Modifying
-    @Transactional
-//    @Query("update Cheque c set c.total = " +
-//            "(select sum( (item.price * item.quantity)) from OrderItem item where item.guest.id in (select g.id from Guest g where g.foodOrder.id = ?1))" +
-//            "where c.id = (select f.cheque.id from FoodOrder f where f.id = ?1)")
+//    @Modifying
+//    @Transactional
+////    @Query("update Cheque c set c.total = " +
+////            "(select sum( (item.price * item.quantity)) from OrderItem item where item.guest.id in (select g.id from Guest g where g.foodOrder.id = ?1))" +
+////            "where c.id = (select f.cheque.id from FoodOrder f where f.id = ?1)")
+//
+//
+////    @Query("update Cheque c set c.total = " +
+////            " (select (item.price * item.quantity) from OrderItem item where item.id ?1) " +
+////            "where c.id = (select)")
+//
+//    @Query("update Cheque c set c.total = (cast(  c.total  as double ) ) + " +
+//            "cast( (select (item.price) from OrderItem item where item.id = ?1) as double ) " +
+//            "where c.id = (select item.guest.foodOrder.cheque.id from  OrderItem item where item.id = ?1) ")
+//
+//
+//    void addTotal(long orderItemId);
 
+    @Query("select sum(item.price * item.quantity)  from OrderItem item where item.guest.foodOrder.cheque.id = ?1 " +
+            " and (item.orderItemStatus = 0 or item.orderItemStatus = 1 or item.orderItemStatus = 2)")
+    Double getTotal(long chequeId);
 
-//    @Query("update Cheque c set c.total = " +
-//            " (select (item.price * item.quantity) from OrderItem item where item.id ?1) " +
-//            "where c.id = (select)")
-
-    @Query("update Cheque c set c.total = (cast(  c.total  as double ) ) + " +
-            "cast( (select (item.price) from OrderItem item where item.id = ?1) as double ) " +
-            "where c.id = (select item.guest.foodOrder.cheque.id from  OrderItem item where item.id = ?1) ")
-
-
-    void addTotal(long orderItemId);
 }

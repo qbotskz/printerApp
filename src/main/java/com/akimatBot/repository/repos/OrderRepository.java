@@ -102,9 +102,13 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 //    boolean existsByWaiterCodeAndOrderStatusNot(long code, OrderStatus orderStatus);
     boolean existsByOrderStatusNot(OrderStatus orderStatus);
 
-    @Query("select sum(fo.cheque.calculatedTotal) from FoodOrder fo where fo.waiter.code = ?1 and fo.createdDate > fo.waiter.currentShift.openingTime and fo.orderStatus = 2")
+    @Query("select sum(item.price * item.quantity " +
+            " - (item.price * item.quantity * item.guest.foodOrder.cheque.discount/100) " +
+            " + (item.price * item.quantity * item.guest.foodOrder.cheque.service/100) )  " +
+            "from OrderItem item where item.guest.foodOrder.waiter.code = ?1 " +
+            " and (item.orderItemStatus = 0 or item.orderItemStatus = 1 or item.orderItemStatus = 2) " +
+            "and item.guest.foodOrder.createdDate > item.guest.foodOrder.waiter.currentShift.openingTime and item.guest.foodOrder.orderStatus = 2")
     Double getClosedOrdersCash(Long code);
-
     @Query("select count (fo.desk.id) from FoodOrder fo where fo.waiter.id = ?1 and fo.orderStatus <> 2 and fo.orderStatus <> 3")
     long getDesksSize(long userId);
 
@@ -148,8 +152,8 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
     boolean isEmpty(long orderId);
 
 
-    @Query("select sum(fo.cheque.calculatedTotal) from FoodOrder fo where fo.createdDate between ?1 and ?2 and fo.orderStatus = 2")
-    double getTotalBetween(Date openingTime, Date closingTime);
+    @Query("select sum (payment.amount - payment.change) from Payment payment  where payment.cheque.order.createdDate between ?1 and ?2 and payment.paymentType.id = 1")
+    Double getTotalBetween(Date openingTime, Date date);
 
 
     @Query("select count(fo) from FoodOrder fo where fo.createdDate between ?1 and ?2 and fo.orderStatus = 2")

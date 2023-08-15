@@ -24,8 +24,8 @@ public class Cheque {
     @OneToOne(mappedBy = "cheque")
     FoodOrder order;
 
-    @Setter
-    private double total;
+//    @Setter
+//    private double total;
 
 //    @Setter
 //    @Getter
@@ -57,13 +57,12 @@ public class Cheque {
     @Setter
     private double addedCashback;
 
-    @Setter
-    @Getter
-    private double calculatedTotal;
+//    @Setter
+//    private double calculatedTotal;
 
-    @Setter
-    @Getter
-    private Double forPayment;
+//    @Setter
+//    @Getter
+//    private Double forPayment;
 //
 //    @Getter
 //    private Double change;
@@ -74,6 +73,19 @@ public class Cheque {
     //    @Getter
     @OneToMany(mappedBy = "cheque", fetch = FetchType.LAZY)
     private List<Payment> payments;
+
+//    public double getCalculatedTotal() {
+//        return calculatedTotal;
+//    }
+
+
+    public double getTotal() {
+        Double ct = TelegramBotRepositoryProvider.getChequeRepo().getTotal(this.getId());
+        if (ct != null){
+            return ct;
+        }
+        return 0.0;
+    }
 
     public void setPrepayment(Payment prepayment) {
         this.prepayment = prepayment;
@@ -96,29 +108,16 @@ public class Cheque {
         }
     }
 
-    //    public double getChange() {
-//        if (getCalculatedTotal() < 0){
-//            this.change = getCalculatedTotal();
-//            return change;
-//        }
-//        return 0;
-//    }
-//    public double getCalculatedTotal() {
-//        return calculatedTotal;
-//    }
-
     public List<Payment> getPayments() {
         return TelegramBotRepositoryProvider.getPaymentRepo().findAllByChequeAndPrepaymentFalse(this);
     }
 
 
-    public void addTotal(double total){
-        this.total += total;
-    }
+//    public void addTotal(double total){
+//        this.total += total;
+//    }
 
     public Cheque() {}
-
-
 
     public ChequeDTO getChequeDTO() {
         this.calculate();
@@ -126,7 +125,7 @@ public class Cheque {
         ChequeDTO chequeDTO = new ChequeDTO();
 
         chequeDTO.setId(this.id);
-        chequeDTO.setTotal(this.total);
+        chequeDTO.setTotal(this.getTotal());
         chequeDTO.setDiscount(this.discount);
         chequeDTO.setService(this.service);
         chequeDTO.setDeliveryPrice(this.deliveryPrice);
@@ -145,6 +144,12 @@ public class Cheque {
 
     public double getChange() {
         double change = 0.0;
+
+        if (prepayment!= null && this.getCalculatedTotal() < prepayment.getAmount()){
+            prepayment.setChange(prepayment.getAmount() - this.getCalculatedTotal());
+            TelegramBotRepositoryProvider.getPaymentRepo().save(prepayment);
+        }
+
         if (prepayment != null) {
             change += prepayment.getChange();
         }
@@ -161,23 +166,6 @@ public class Cheque {
         return null;
     }
 
-//    private double getChange() {
-//        if (this.getPaymentsTotal() + getPrepayment() > calculatedTotal){
-//            return getPaymentsTotal() + getPrepayment()  - calculatedTotal;
-//        }
-//        return 0.0;
-//    }
-
-//    public double getForPayment() {
-//        if (getPaymentsTotal() + getPrepayment() >  getCalculatedTotal()){
-//            return 0;
-//        }
-//        return this.getCalculatedTotal() - getPaymentsTotal() - getPrepayment();
-//    }
-
-//    private double getPaymentsTotal() {
-//        return TelegramBotRepositoryProvider.getPaymentRepo().getTotalOfCheque(this.id);
-//    }
 
     private double getPaymentsTotal() {
         double total = 0.0;
@@ -196,23 +184,29 @@ public class Cheque {
     }
 
     public void calculate() {
-        calculateTotal();
-        calculateForPayment();
+//        calculateTotal();
+//        calculateForPayment();
 //        calculateChange();
     }
 
 //    private void calculateChange() {
-//        if (this.getPaymentsTotal() + getPrepayment() > calculatedTotal){
-//            change =  getPaymentsTotal() + getPrepayment()  - calculatedTotal;
+//        if (this.getPaymentsTotal() + getPrepayment().getAmount() > calculatedTotal){
+//            change =  getPaymentsTotal() + getPrepayment().getAmount()  - calculatedTotal;
 //        }
 //        else change = 0.0;
 //    }
 
-    private void calculateForPayment() {
+    //    private void calculateForPayment() {
+//        if (getPaymentsTotal() + getPrepaymentAmount() >  getCalculatedTotal()){
+//            forPayment = 0.0;
+//        }
+//        else forPayment =  this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
+//    }
+    public double getForPayment() {
         if (getPaymentsTotal() + getPrepaymentAmount() >  getCalculatedTotal()){
-            forPayment = 0.0;
+            return 0.0;
         }
-        else forPayment =  this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
+        else return this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
     }
 
     private double getPrepaymentAmount() {
@@ -222,19 +216,31 @@ public class Cheque {
         return 0.0;
     }
 
-    private void calculateTotal() {
-        calculatedTotal  = total - total*discount/100;
+    public double getCalculatedTotal() {
+        double total = getTotal();
+
+        double calculatedTotal  = total - total*discount/100;
         calculatedTotal += total * service/100;
         calculatedTotal += deliveryPrice;
         calculatedTotal -= usedCashback;
 
         addedCashback = calculatedTotal * cashbackPercentage/100;
 
+        return calculatedTotal;
     }
+//    private void calculateTotal() {
+//        calculatedTotal  = total - total*discount/100;
+//        calculatedTotal += total * service/100;
+//        calculatedTotal += deliveryPrice;
+//        calculatedTotal -= usedCashback;
+//
+//        addedCashback = calculatedTotal * cashbackPercentage/100;
+//
+//    }
 
-    public void minusTotal(double value) {
-        total -= value;
-    }
+//    public void minusTotal(double value) {
+//        total -= value;
+//    }
 
     public void deletePrepayment() {
         TelegramBotRepositoryProvider.getPaymentRepo().delete(this.prepayment);

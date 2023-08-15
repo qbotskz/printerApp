@@ -144,7 +144,7 @@ public class OrderService {
             orderItem = orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
 
-            foodOrder.getCheque().addTotal(orderItem.getTotal());
+//            foodOrder.getCheque().addTotal(orderItem.getTotal());
         }
 
 
@@ -247,7 +247,7 @@ public class OrderService {
             orderItem = orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
 
-            foodOrder.getCheque().addTotal(orderItem.getTotal());
+//            foodOrder.getCheque().addTotal(orderItem.getTotal());
         }
 
 
@@ -435,9 +435,9 @@ public class OrderService {
         }
 
 //        chequeRepo.addTotal(orderItem.getId());
-        Cheque cheque1e = orderItem.getGuest().getFoodOrder().getCheque();
-        cheque1e.addTotal(orderItem.getPrice());
-        chequeRepo.save(cheque1e);
+//        Cheque cheque1e = orderItem.getGuest().getFoodOrder().getCheque();
+//        cheque1e.addTotal(orderItem.getPrice());
+//        chequeRepo.save(cheque1e);
 
         AnswerAddToCartDTO answerAddToCartDTO = new AnswerAddToCartDTO();
         answerAddToCartDTO.setOrderItem(orderItem.getOrderItemDTO(language));
@@ -470,9 +470,9 @@ public class OrderService {
         }
         orderItem = orderItemRepository.save(orderItem);
 
-        Cheque cheque1e = orderItem.getGuest().getFoodOrder().getCheque();
-        cheque1e.addTotal(orderItem.getPrice());
-        chequeRepo.save(cheque1e);
+//        Cheque cheque1e = orderItem.getGuest().getFoodOrder().getCheque();
+//        cheque1e.addTotal(orderItem.getPrice());
+//        chequeRepo.save(cheque1e);
 
         return orderItem;
     }
@@ -619,8 +619,8 @@ public class OrderService {
             int quan =  orderItem.getQuantity();
             int forMinus = price * (count - quan);
 
-            cheque.addTotal(forMinus);
-            chequeRepo.save(cheque);
+//            cheque.addTotal(forMinus);
+//            chequeRepo.save(cheque);
 
             if (count == 0) {
                 orderItemRepository.setDelete(orderItem);
@@ -641,10 +641,10 @@ public class OrderService {
     @Transactional
     public void deleteOrderItem(OrderItem orderItem) {
 
-        FoodOrder foodOrder = orderItem.getGuest().getFoodOrder();
-        Cheque cheque = foodOrder.getCheque();
-        cheque.addTotal(-(orderItem.getTotal()));
-        chequeRepo.save(cheque);
+//        FoodOrder foodOrder = orderItem.getGuest().getFoodOrder();
+//        Cheque cheque = foodOrder.getCheque();
+//        cheque.addTotal(-(orderItem.getTotal()));
+//        chequeRepo.save(cheque);
 
 
         orderItemRepository.setDelete(orderItem);
@@ -730,8 +730,8 @@ public class OrderService {
             Double excess = orderItemRepository.getTotalInCartsOfOrder(orderId);
             if (excess != null) {
                 Cheque cheque = foodOrder.getCheque();
-                cheque.minusTotal(excess);
-                cheque = chequeRepo.save(cheque);
+//                cheque.minusTotal(excess);
+//                cheque = chequeRepo.save(cheque);
                 foodOrder.setCheque(cheque);
             }
 
