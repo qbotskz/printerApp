@@ -1,6 +1,5 @@
 #spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.url=jdbc:postgresql://localhost:5433/qrestTest
-#spring.datasource.url=jdbc:postgresql://localhost:5433/qrestoran
+spring.datasource.url=jdbc:postgresql://localhost:###/###
 spring.datasource.username=postgres
 spring.datasource.password=user
 
@@ -9,8 +8,7 @@ spring.jpa.generate-ddl=true
 #spring.jpa.show-sql=true
 spring.jpa.hibernate.ddl-auto=update
 
-server.port=8062
-#server.port=8072
+server.port=###
 
 server.ssl.enabled=true
 #server.ssl.key-alias=baeldung // ?? ?????????????????
