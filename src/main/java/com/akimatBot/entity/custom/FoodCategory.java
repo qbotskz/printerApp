@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //@Data
 @Entity
@@ -17,7 +18,7 @@ import java.util.*;
 public class FoodCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long     id;
+    private long id;
     @Column(length = 4096)
     private String nameRu;
     @Column(length = 4096)
@@ -32,18 +33,19 @@ public class FoodCategory {
 //    private FoodCategory foodCategory;
 //    private Boolean inline;
 
-    @OneToMany(mappedBy = "foodCategory",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "foodCategory", fetch = FetchType.LAZY)
     private List<Food> foods;
 
 
-    public String getName(int langId){
-        if(langId == 1){
+    public String getName(int langId) {
+        if (langId == 1) {
             return this.nameRu;
         }
         return this.nameKz;
     }
-    public String getDescription(Language language){
-        if(language.equals(Language.ru)){
+
+    public String getDescription(Language language) {
+        if (language.equals(Language.ru)) {
             return this.nameRu;
         }
         return this.nameKz;
@@ -84,7 +86,7 @@ public class FoodCategory {
 
     private List<FoodDTO> getFoodsDTO(Language language) {
         List<FoodDTO> dtos = new ArrayList<>();
-        for (Food food : this.getFoods()){
+        for (Food food : this.getFoods()) {
             dtos.add(food.getFoodDTO(language));
         }
         return dtos;

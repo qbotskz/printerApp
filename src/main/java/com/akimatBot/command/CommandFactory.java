@@ -1,15 +1,18 @@
 package com.akimatBot.command;
 
-import com.akimatBot.command.impl.*;
 import com.akimatBot.command.impl.id001_ShowInfo;
-
+import com.akimatBot.command.impl.id003_Market;
+import com.akimatBot.command.impl.id004_SendDailyReport;
+import com.akimatBot.command.impl.id093_registerPhone;
 import com.akimatBot.exceptions.NotRealizedMethodException;
 
 import java.util.Optional;
 
 public class CommandFactory {
 
-    public  static Command getCommand(long id) { return Optional.ofNullable(getCommandWithoutReflection((int) id)).orElseThrow(() -> new NotRealizedMethodException("Not realized for type: " + id)); }
+    public static Command getCommand(long id) {
+        return Optional.ofNullable(getCommandWithoutReflection((int) id)).orElseThrow(() -> new NotRealizedMethodException("Not realized for type: " + id));
+    }
 
     private static Command getCommandWithoutReflection(int id) {
         switch (id) {

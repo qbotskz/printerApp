@@ -1,24 +1,20 @@
 package com.akimatBot.web.controllers.client;
 
 
-import com.akimatBot.RestoranApplication;
 import com.akimatBot.entity.custom.CartItem;
 import com.akimatBot.entity.standart.Employee;
 import com.akimatBot.repository.repos.FoodCategoryRepo;
 import com.akimatBot.repository.repos.MessageRepository;
 import com.akimatBot.repository.repos.PropertiesRepo;
 import com.akimatBot.services.CartItemService;
-import com.akimatBot.services.KeyboardMarkUpService;
 import com.akimatBot.services.EmployeeService;
+import com.akimatBot.services.KeyboardMarkUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,6 @@ import java.util.TreeMap;
 
 @RestController
 public class CartController {
-
 
 
     @Autowired
@@ -48,9 +43,9 @@ public class CartController {
 
     @PostMapping("/removeFromCart")
     public Map<Object, Object> removeFromCart(@RequestParam("foodId") int bookId,
-                                  @RequestParam("chatId") long chatId){
-         cartItemService.decreaseCartItemQuantity(bookId, chatId);
-         return getCart(chatId);
+                                              @RequestParam("chatId") long chatId) {
+        cartItemService.decreaseCartItemQuantity(bookId, chatId);
+        return getCart(chatId);
     }
 
 //    @PostMapping("/createOrder")
@@ -82,34 +77,33 @@ public class CartController {
 
 
     @PostMapping("/addToCart")
-    public Map<Object, Object> addToCart(@RequestParam("foodId") long bookId, @RequestParam("chatId") long chatId){
+    public Map<Object, Object> addToCart(@RequestParam("foodId") long bookId, @RequestParam("chatId") long chatId) {
 
         try {
             cartItemService.addToCart(bookId, chatId);
             return getCart(chatId);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Map<Object, Object> ans = new TreeMap<>();
-            ans.put("answer" , "error");
+            ans.put("answer", "error");
             return ans;
         }
     }
 
     @PostMapping("/clearCart")
-    public boolean  clearCart(@RequestParam("chatId") long chatId){
+    public boolean clearCart(@RequestParam("chatId") long chatId) {
         try {
             cartItemService.clearUserCart(chatId);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
 
-
     @GetMapping("/getCart")
-    public  Map<Object, Object> getCart(@RequestParam("chatId") long chatId){
+    public Map<Object, Object> getCart(@RequestParam("chatId") long chatId) {
         //todo overwrite
 
         List<CartItem> cartItems = cartItemService.findAllCartItemsOfUser(chatId);
@@ -117,13 +111,12 @@ public class CartController {
         Map<Object, Object> data = new TreeMap<>();
 
 
-
         List<Map<Object, Object>> books = new ArrayList<>();
-        for (CartItem cartItem : cartItems){
+        for (CartItem cartItem : cartItems) {
             Map<Object, Object> ans = new TreeMap<>();
-            ans.put("id" , cartItem.getId());
-            ans.put("quantity" , cartItem.getQuantity());
-            ans.put("item" , cartItem.getFood().getJson(user.getLanguage()));
+            ans.put("id", cartItem.getId());
+            ans.put("quantity", cartItem.getQuantity());
+            ans.put("item", cartItem.getFood().getJson(user.getLanguage()));
             books.add(ans);
         }
 
@@ -140,13 +133,11 @@ public class CartController {
         data.put("cartItems", books);
         data.put("properties", prop);
         data.put("userInfo", userInfo);
-        return data ;
+        return data;
     }
 
 
-
-
-//    private int sendMessage(String text, String chatId){
+    //    private int sendMessage(String text, String chatId){
 //        try {
 //            SendMessage sendMessage = new SendMessage();
 //            sendMessage.setChatId(chatId);
@@ -159,11 +150,12 @@ public class CartController {
 //        }
 //        return 0;
 //    }
-    private long sendMessageWithKeyboard(String text, long kid, long chatId){
+    private long sendMessageWithKeyboard(String text, long kid, long chatId) {
         KeyboardMarkUpService keyboardMarkUpService = new KeyboardMarkUpService();
         return sendMessageWithKeyboard(text, keyboardMarkUpService.select(kid, chatId), chatId);
     }
-    private int sendMessageWithKeyboard(String text, ReplyKeyboard replyKeyboard, long chatId){
+
+    private int sendMessageWithKeyboard(String text, ReplyKeyboard replyKeyboard, long chatId) {
 //        try {
 //
 //            SendMessage sendMessage = new SendMessage();
@@ -178,17 +170,16 @@ public class CartController {
 //        }
         return 0;
     }
-    public  void     deleteMessage(String chatId, int messageId) {
+
+    public void deleteMessage(String chatId, int messageId) {
 //        try {
 //            RestoranApplication.bot.execute(new DeleteMessage(chatId, messageId));
 //        } catch (TelegramApiException ignored) {}
     }
 
-    private String getText(long messId, int langId){
+    private String getText(long messId, int langId) {
         return messageRepo.findByIdAndLangId(messId, langId).getName();
     }
-
-
 
 
 }

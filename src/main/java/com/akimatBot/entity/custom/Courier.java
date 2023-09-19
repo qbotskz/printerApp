@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Courier {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long     id;
+    private long id;
     @ManyToOne
     private User user;
 
@@ -21,7 +21,7 @@ public class Courier {
     private String photoUrl;
 
 
-    public Courier(User user, Boolean isPhotoAllowed){
+    public Courier(User user, Boolean isPhotoAllowed) {
         this.user = user;
         this.isPhotoAllowed = isPhotoAllowed;
     }

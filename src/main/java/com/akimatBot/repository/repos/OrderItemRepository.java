@@ -1,12 +1,9 @@
 package com.akimatBot.repository.repos;
 
 
-import com.akimatBot.entity.custom.FoodOrder;
-import com.akimatBot.entity.custom.Guest;
 import com.akimatBot.entity.custom.OrderItem;
 import com.akimatBot.entity.enums.OrderItemStatus;
 import com.akimatBot.entity.enums.OrderStatus;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +14,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     OrderItem findById(long id);
 
@@ -26,6 +23,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
 
     @Query(value = "select * from order_item item where item.guest_id =?1 and item.order_item_status != 3 order by item.id asc, item.order_item_status desc", nativeQuery = true)
     List<OrderItem> findAllByGuestOrderByIdAscOrderItemStatusDesc(long guest);
+
     @Query("select item from OrderItem item where item.guest.foodOrder.id = ?1 and item.orderItemStatus = 0")
     List<OrderItem> getAllByOrderInCart(long orderId);
 
@@ -41,7 +39,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
 
     @Modifying
     @Transactional
-    default void deleteInCartsOfOrder(long orderId){
+    default void deleteInCartsOfOrder(long orderId) {
 //        this.deleteByStatusOfOrder(orderId, OrderItemStatus.IN_CART);
         this.deleteAllByGuestFoodOrderIdAndOrderItemStatus(orderId, OrderItemStatus.IN_CART);
     }
@@ -53,7 +51,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
     @Query(value = "update order_item item set order_item_status = ?1 " +
             "where item.guest_id in (select g.id from guest g where g.food_order_id = ?2) and item.order_item_status = ?3", nativeQuery = true)
 //    void cookItems(long orderId,long statusId, );
-    void cookItems(long forSet, long orderId,long equal);
+    void cookItems(long forSet, long orderId, long equal);
 
     @Modifying
     @Transactional

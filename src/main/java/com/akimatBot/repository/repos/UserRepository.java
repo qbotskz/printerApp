@@ -1,18 +1,15 @@
 package com.akimatBot.repository.repos;
 
-import com.akimatBot.entity.custom.RestaurantBranch;
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.entity.standart.Role;
 import com.akimatBot.entity.standart.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     User findByChatId(long chatId);
+
     User findById(long id);
+
     User findByPhone(String phone);
 
     User getByChatId(long chatId);

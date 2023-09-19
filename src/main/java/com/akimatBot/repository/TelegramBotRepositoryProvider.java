@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TelegramBotRepositoryProvider {
-    
+
     @Getter
     @Setter
     private static MessageRepository messageRepository;
@@ -35,7 +35,6 @@ public class TelegramBotRepositoryProvider {
     @Getter
     @Setter
     private static LanguageUserRepository languageUserRepository;
-
 
 
     @Getter
@@ -128,20 +127,19 @@ public class TelegramBotRepositoryProvider {
     private static EmployeeRepository employeeRepository;
 
 
-
     @Autowired
     public TelegramBotRepositoryProvider(MessageRepository messageRepository, KeyboardMarkUpRepository keyboardMarkUpRepository,
                                          UserRepository userRepository, ButtonRepository buttonRepository,
-                                          LanguageUserRepository languageUserRepository, RoleRepository operatorRepository,
+                                         LanguageUserRepository languageUserRepository, RoleRepository operatorRepository,
                                          PropertiesRepo propertiesRepo, FoodRepository foodRepository, FoodCategoryRepo foodCategoryRepo,
                                          OrderRepository orderRepository,
                                          ReviewRepository reviewRepository, CourierRepository courierRepository,
                                          SuggestionComplaintRepo suggestionComplaintRepo, CashbackRepository cashbackRepository,
                                          RestaurantBranchRepo restaurantBranchRepo, KaspiAccountsRepository kaspiAccountsRepository,
-                                         DeskRepo deskRepo, CartItemRepo cartItemRepo,OrderItemRepository orderItemRepository,
-                                         GuestRepo guestRepo,ChequeRepo chequeRepo, WaiterShiftRepo waiterShiftRepo,
-                                         PaymentTypeRepo paymentTypeRepo,PaymentRepo paymentRepo,
-                                         HallRepo hallRepo,EmployeeRepository employeeRepository){
+                                         DeskRepo deskRepo, CartItemRepo cartItemRepo, OrderItemRepository orderItemRepository,
+                                         GuestRepo guestRepo, ChequeRepo chequeRepo, WaiterShiftRepo waiterShiftRepo,
+                                         PaymentTypeRepo paymentTypeRepo, PaymentRepo paymentRepo,
+                                         HallRepo hallRepo, EmployeeRepository employeeRepository) {
 
         setMessageRepository(messageRepository);
         setKeyboardMarkUpRepository(keyboardMarkUpRepository);

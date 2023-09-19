@@ -4,43 +4,39 @@ import lombok.Data;
 
 @Data
 public
-class MapUtil
-{
+class MapUtil {
 
     static int INF = 10000;
     public double lang;
     public double lat;
-    static class Point
-    {
+
+    static class Point {
         double x;
         double y;
 
-        public Point(double x, double y)
-        {
+        public Point(double x, double y) {
             this.x = x;
             this.y = y;
         }
-    };
+    }
 
-    static boolean onSegment(Point p, Point q, Point r)
-    {
+    ;
+
+    static boolean onSegment(Point p, Point q, Point r) {
         if (q.x <= Math.max(p.x, r.x) &&
                 q.x >= Math.min(p.x, r.x) &&
                 q.y <= Math.max(p.y, r.y) &&
-                q.y >= Math.min(p.y, r.y))
-        {
+                q.y >= Math.min(p.y, r.y)) {
             return true;
         }
         return false;
     }
 
-    static int orientation(Point p, Point q, Point r)
-    {
+    static int orientation(Point p, Point q, Point r) {
         double val = (q.y - p.y) * (r.x - q.x)
                 - (q.x - p.x) * (r.y - q.y);
 
-        if (val == 0)
-        {
+        if (val == 0) {
             return 0;
         }
         return (val > 0) ? 1 : 2;
@@ -48,36 +44,30 @@ class MapUtil
 
 
     static boolean doIntersect(Point p1, Point q1,
-                               Point p2, Point q2)
-    {
+                               Point p2, Point q2) {
 
         int o1 = orientation(p1, q1, p2);
         int o2 = orientation(p1, q1, q2);
         int o3 = orientation(p2, q2, p1);
         int o4 = orientation(p2, q2, q1);
 
-        if (o1 != o2 && o3 != o4)
-        {
+        if (o1 != o2 && o3 != o4) {
             return true;
         }
 
-        if (o1 == 0 && onSegment(p1, p2, q1))
-        {
+        if (o1 == 0 && onSegment(p1, p2, q1)) {
             return true;
         }
 
-        if (o2 == 0 && onSegment(p1, q2, q1))
-        {
+        if (o2 == 0 && onSegment(p1, q2, q1)) {
             return true;
         }
 
-        if (o3 == 0 && onSegment(p2, p1, q2))
-        {
+        if (o3 == 0 && onSegment(p2, p1, q2)) {
             return true;
         }
 
-        if (o4 == 0 && onSegment(p2, q1, q2))
-        {
+        if (o4 == 0 && onSegment(p2, q1, q2)) {
             return true;
         }
 
@@ -85,25 +75,20 @@ class MapUtil
     }
 
 
-    static boolean isInside(Point polygon[], int n, Point p)
-    {
-        if (n < 3)
-        {
+    static boolean isInside(Point polygon[], int n, Point p) {
+        if (n < 3) {
             return false;
         }
 
         Point extreme = new Point(INF, p.y);
 
         int count = 0, i = 0;
-        do
-        {
+        do {
             int next = (i + 1) % n;
 
-            if (doIntersect(polygon[i], polygon[next], p, extreme))
-            {
+            if (doIntersect(polygon[i], polygon[next], p, extreme)) {
 
-                if (orientation(polygon[i], p, polygon[next]) == 0)
-                {
+                if (orientation(polygon[i], p, polygon[next]) == 0) {
                     return onSegment(polygon[i], p,
                             polygon[next]);
                 }
@@ -117,7 +102,7 @@ class MapUtil
         return (count % 2 == 1);
     }
 
-    public boolean isInDeliveryZone(double longitude, double latitude){
+    public boolean isInDeliveryZone(double longitude, double latitude) {
 //        [76.95713797363251,43.27135439850919],
 //        [76.92621617239705,43.26909988629434],
 //        [76.91619405992589,43.267901435958976],
@@ -150,12 +135,9 @@ class MapUtil
 //                new Point(76.88701430114708, 43.264360942481865)};
         int n = polygon1.length;
         Point p = new Point(longitude, latitude);
-        if (isInside(polygon1, n, p))
-        {
+        if (isInside(polygon1, n, p)) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

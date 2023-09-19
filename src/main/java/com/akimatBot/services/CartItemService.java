@@ -31,20 +31,22 @@ public class CartItemService {
     public List<CartItem> findAllCartItemsOfUser(long chatId) {
         return cartItemRepo.findAllByClientChatIdOrderById(chatId);
     }
+
     public List<CartItem> findAllCartItemsOfTable(long tableId) {
         return cartItemRepo.findAllByDeskIdOrderById(tableId);
     }
 
-    public CartItem findByBookAndTable(long foodId, long tableId){
+    public CartItem findByBookAndTable(long foodId, long tableId) {
 
         return cartItemRepo.findByFoodIdAndDeskId(foodId, tableId);
     }
-    public CartItem findByBookAndChatId(Food food, long chatId){
+
+    public CartItem findByBookAndChatId(Food food, long chatId) {
 
         return cartItemRepo.findByFoodAndClientChatId(food, chatId);
     }
 
-    public CartItem findByIdAndChatId(long id, long chatId){
+    public CartItem findByIdAndChatId(long id, long chatId) {
         return cartItemRepo.findByIdAndClientChatId(id, chatId);
     }
 
@@ -55,47 +57,46 @@ public class CartItemService {
     }
 
     @Transactional
-    public CartItem addToCart(Long bookId, long chatId){
+    public CartItem addToCart(Long bookId, long chatId) {
 
         CartItem cartItem;
         cartItem = this.findByBookAndChatId(foodService.findById(bookId), chatId);
 
-        if (cartItem == null){
+        if (cartItem == null) {
             cartItem = new CartItem();
             cartItem.setQuantity(1);
             cartItem.setFood(foodService.findById(bookId));
             cartItem.setClientChatId(chatId);
             this.save(cartItem);
-        }
-        else {
+        } else {
             cartItem.quantityPlusOne();
-            cartItem =  this.save(cartItem);
+            cartItem = this.save(cartItem);
         }
         return cartItem;
     }
+
     @Transactional
-    public CartItem addToCartFromWaiter(long bookId, long tableId){
+    public CartItem addToCartFromWaiter(long bookId, long tableId) {
 
         CartItem cartItem;
         cartItem = this.findByBookAndTable(bookId, tableId);
 
-        if (cartItem == null){
+        if (cartItem == null) {
             cartItem = new CartItem();
             cartItem.setDesk(deskRepo.getOne(tableId));
             cartItem.setQuantity(1);
             cartItem.setFood(foodService.findById(bookId));
 //            cartItem.setClientChatId(chatId);
             this.save(cartItem);
-        }
-        else {
+        } else {
             cartItem.quantityPlusOne();
-            cartItem =  this.save(cartItem);
+            cartItem = this.save(cartItem);
         }
         return cartItem;
     }
 
     @Transactional
-    public boolean decreaseCartItemQuantity(long bookId, long chatId){
+    public boolean decreaseCartItemQuantity(long bookId, long chatId) {
 
         try {
             CartItem cartItem;
@@ -113,12 +114,11 @@ public class CartItemService {
             }
 
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-
 
 
     @Transactional
@@ -130,6 +130,7 @@ public class CartItemService {
     public void clearUserCart(long chatId) {
         cartItemRepo.deleteCartItemsByClientChatId(chatId);
     }
+
     @Transactional
     public void clearDeskCart(long deskId) {
         cartItemRepo.deleteCartItemsByDeskId(deskId);

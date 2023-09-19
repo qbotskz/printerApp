@@ -16,7 +16,7 @@ public class Property {
     @Column(name = "value_1")
     private String value1;
 
-//    private String text;
+    //    private String text;
     private String latitude;
     private String longitude;
 }

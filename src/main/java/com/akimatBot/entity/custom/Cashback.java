@@ -10,8 +10,9 @@ import javax.persistence.Id;
 @Data
 @Entity(name = "cashback")
 public class Cashback {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int     id;
+    private int id;
     private Integer cashbackPercentage;
 }

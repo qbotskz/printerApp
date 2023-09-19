@@ -7,7 +7,7 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 
 public class CustomWebSocketHandlerDecoratorFactory implements WebSocketHandlerDecoratorFactory {
 
-    private static final int OUTPUT_BUFFER_SIZE = 1024000 ; // Установите желаемый размер буфера вывода
+    private static final int OUTPUT_BUFFER_SIZE = 1024000; // Установите желаемый размер буфера вывода
 
     @Override
     public WebSocketHandler decorate(WebSocketHandler handler) {

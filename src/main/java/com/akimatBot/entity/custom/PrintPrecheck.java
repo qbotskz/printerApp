@@ -32,8 +32,7 @@ public class PrintPrecheck {
     Date date;
 
 
-
-    public PrintPrecheckDTO getDTO(){
+    public PrintPrecheckDTO getDTO() {
         PrintPrecheckDTO printPrecheckDTO = new PrintPrecheckDTO();
         printPrecheckDTO.setId(this.getId());
         printPrecheckDTO.setPrecheckDate(this.precheckDate);

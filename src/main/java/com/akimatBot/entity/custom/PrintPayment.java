@@ -27,7 +27,7 @@ public class PrintPayment {
 
     String printerName;
 
-    public PrintPaymentDTO getDTO(){
+    public PrintPaymentDTO getDTO() {
         PrintPaymentDTO printPaymentDTO = new PrintPaymentDTO();
         printPaymentDTO.setId(this.getId());
         printPaymentDTO.setPrecheckDate(this.precheckDate);

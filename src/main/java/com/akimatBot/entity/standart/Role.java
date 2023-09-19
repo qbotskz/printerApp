@@ -13,7 +13,7 @@ import javax.persistence.Id;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long     id;
+    private long id;
 
     public Role(long id) {
         this.id = id;

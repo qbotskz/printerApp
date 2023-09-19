@@ -1,10 +1,7 @@
 package com.akimatBot.repository.repos;
 
-import com.akimatBot.entity.custom.CartItem;
-import com.akimatBot.entity.custom.Food;
 import com.akimatBot.entity.custom.WaiterShift;
 import com.akimatBot.entity.standart.Employee;
-import com.akimatBot.entity.standart.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

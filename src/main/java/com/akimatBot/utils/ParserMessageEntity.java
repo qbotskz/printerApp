@@ -13,22 +13,22 @@ public class ParserMessageEntity {
     private String end;
     private String start;
 
-    public String   getTextWithEntity(Message message) {
+    public String getTextWithEntity(Message message) {
         if (message.hasText() && message.hasEntities()) {
-            result                                      = message.getText();
-            List<MessageEntity> entities                = message.getEntities();
-            ListIterator<MessageEntity> listIterator    = entities.listIterator(entities.size());
+            result = message.getText();
+            List<MessageEntity> entities = message.getEntities();
+            ListIterator<MessageEntity> listIterator = entities.listIterator(entities.size());
             while (listIterator.hasPrevious()) {
-                MessageEntity previous                  = listIterator.previous();
+                MessageEntity previous = listIterator.previous();
                 parseEntity(previous);
                 magic(previous);
-                result                                  = start + text + end;
+                result = start + text + end;
             }
         } else if (message.hasText()) return message.getText();
         return result;
     }
 
-    private void    magic(MessageEntity messageEntity) {
+    private void magic(MessageEntity messageEntity) {
         if (messageEntity.getType().equalsIgnoreCase("bold")) {
             formatText("<b>%s</b>");
             return;
@@ -47,24 +47,26 @@ public class ParserMessageEntity {
         }
     }
 
-    private String  formatText(String format) { return text = String.format(format, text); }
-
-    private void    parseEntity(MessageEntity entity) {
-        start   = result.substring(0, entity.getOffset());
-        text    = result.substring(entity.getOffset(), entity.getOffset() + entity.getLength());
-        end     = result.substring(entity.getOffset() + entity.getLength());
+    private String formatText(String format) {
+        return text = String.format(format, text);
     }
 
-    public String   parseEntityToStringTag(Message message) {
+    private void parseEntity(MessageEntity entity) {
+        start = result.substring(0, entity.getOffset());
+        text = result.substring(entity.getOffset(), entity.getOffset() + entity.getLength());
+        end = result.substring(entity.getOffset() + entity.getLength());
+    }
+
+    public String parseEntityToStringTag(Message message) {
         if (message.hasText() && message.hasEntities()) {
-            result                          = message.getText();
-            List<MessageEntity> entities    = message.getEntities();
-            ListIterator<MessageEntity> li  = entities.listIterator(entities.size());
+            result = message.getText();
+            List<MessageEntity> entities = message.getEntities();
+            ListIterator<MessageEntity> li = entities.listIterator(entities.size());
             while (li.hasPrevious()) {
-                MessageEntity previous      = li.previous();
+                MessageEntity previous = li.previous();
                 parseEntity(previous);
                 magic(previous);
-                result                      = start + text + end;
+                result = start + text + end;
             }
         } else if (message.hasText()) return message.getText();
         return result;

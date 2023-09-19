@@ -1,7 +1,10 @@
 package com.akimatBot.utils;
 
 public class ButtonUtil {
-    public static String getButtonName(String text) { return getButtonName(text, 100); }
+    public static String getButtonName(String text) {
+        return getButtonName(text, 100);
+    }
+
     public static String getButtonName(String text, int length) {
         text = text.replaceAll("\\s+", " ");
         text = text.replaceAll("\\s+$", "");

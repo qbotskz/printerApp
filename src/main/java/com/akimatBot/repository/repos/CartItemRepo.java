@@ -11,7 +11,8 @@ import java.util.List;
 public interface CartItemRepo extends JpaRepository<CartItem, Long> {
 
     List<CartItem> findAllByClientChatIdOrderById(long chatId);
-//
+
+    //
     List<CartItem> findAllByDeskIdOrderById(long tableId);
 
     CartItem findByFoodAndClientChatId(Food food, long chatId);

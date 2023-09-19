@@ -7,25 +7,22 @@ import com.akimatBot.repository.repos.UserRepository;
 import org.springframework.stereotype.Component;
 
 
-
-
 @Component
 public class LanguageService {
 
-    private static UserRepository usersRepo           = TelegramBotRepositoryProvider.getUserRepository();
+    private static UserRepository usersRepo = TelegramBotRepositoryProvider.getUserRepository();
 
-    public  static Language getLanguage(long chatId) {
+    public static Language getLanguage(long chatId) {
 
         Language language = usersRepo.getLanguageByChatId(chatId);
-        if (language != null ){
+        if (language != null) {
             return language;
-        }
-        else {
+        } else {
             return Language.ru;
         }
     }
 
-    public  static  void        setLanguage(long chatId, Language language) {
+    public static void setLanguage(long chatId, Language language) {
         User user = usersRepo.findByChatId(chatId);
         if (user == null) {
             user = new User();

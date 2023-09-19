@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ButtonRepository extends JpaRepository<Button, Long> {
     Button findByIdAndLangId(long buttonId, int langId);
+
     Button findByNameAndLangId(String name, int langId);
 
     List<Button> findAllByNameContainingAndLangIdOrderById(String text, int id);

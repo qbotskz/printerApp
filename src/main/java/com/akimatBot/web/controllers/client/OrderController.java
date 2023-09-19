@@ -6,8 +6,8 @@ import com.akimatBot.repository.repos.MessageRepository;
 import com.akimatBot.repository.repos.OrderRepository;
 import com.akimatBot.repository.repos.PropertiesRepo;
 import com.akimatBot.services.CartItemService;
-import com.akimatBot.services.OrderService;
 import com.akimatBot.services.EmployeeService;
+import com.akimatBot.services.OrderService;
 import com.akimatBot.web.dto.AnswerDTO;
 import com.akimatBot.web.dto.FoodOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class OrderController {
     //method for client // todo overwrite
     @PostMapping("/createOrder/inRestaurant")
     public FoodOrderDTO createOrderRest(@RequestParam("chatId") long chatId
-    ){
+    ) {
 
 //        User user = userService.findByChatId(chatId);
 ////        user.setPhone(phoneNumber);
@@ -79,13 +79,12 @@ public class OrderController {
     }
 
     @GetMapping("/getOrder/active")
-    public ResponseEntity<Object> getActiveOrder(@RequestParam("chatId") long chatId){
+    public ResponseEntity<Object> getActiveOrder(@RequestParam("chatId") long chatId) {
         FoodOrder order = orderService.getActiveOrderInRestaurant(chatId);
-        if(order != null) {
+        if (order != null) {
             return new ResponseEntity<>(order.getFoodOrderDTO(employeeService.getLanguageByChatId(chatId), null),
                     HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(new AnswerDTO("order is empty").getJson(),
                     HttpStatus.BAD_REQUEST);
         }
@@ -103,7 +102,7 @@ public class OrderController {
 
 
     @PostMapping("/createOrder/inRestaurant/reOrder")
-    public FoodOrderDTO reOrderRest(@RequestParam("chatId") long chatId){
+    public FoodOrderDTO reOrderRest(@RequestParam("chatId") long chatId) {
 
 //        User user = userService.findByChatId(chatId);
 //        userService.save(user);
@@ -118,16 +117,14 @@ public class OrderController {
     }
 
 
-
-
     //method for client // todo overwrite
     @PostMapping("/createOrder/takeout")
     public FoodOrderDTO createOrder(@RequestParam("chatId") long chatId,
-                                           @RequestParam("useCashback") boolean useCashback,
-                                           @RequestParam("deliverNeed") boolean deliverNeed,
-                                           @RequestParam("address") String address,
-                                           @RequestParam("fullName") String fullName,
-                                           @RequestParam("phoneNumber") String phoneNumber){
+                                    @RequestParam("useCashback") boolean useCashback,
+                                    @RequestParam("deliverNeed") boolean deliverNeed,
+                                    @RequestParam("address") String address,
+                                    @RequestParam("fullName") String fullName,
+                                    @RequestParam("phoneNumber") String phoneNumber) {
 
 //        User user = userService.findByChatId(chatId);
 //        user.setPhone(phoneNumber);

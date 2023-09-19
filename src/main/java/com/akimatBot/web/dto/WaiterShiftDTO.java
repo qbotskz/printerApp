@@ -13,7 +13,7 @@ public class WaiterShiftDTO {
 
     Date openingTime;
 
-    public Map<Object, Object> getJson(){
+    public Map<Object, Object> getJson() {
         Map<Object, Object> shift = new TreeMap<>();
         Map<Object, Object> map = new TreeMap<>();
 

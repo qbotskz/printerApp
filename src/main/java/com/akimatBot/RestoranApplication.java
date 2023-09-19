@@ -23,5 +23,4 @@ public class RestoranApplication implements CommandLineRunner {
     }
 
 
-
 }

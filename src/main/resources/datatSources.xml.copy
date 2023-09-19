@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="###@localhost" uuid="###">
+    <data-source source="LOCAL" name="qrestTest@localhost" uuid="1846a3c3-267e-4bf4-b51a-676e60ce2af9">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:###/###</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5433/qrestTest</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

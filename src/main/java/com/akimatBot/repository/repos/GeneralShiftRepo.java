@@ -1,6 +1,5 @@
 package com.akimatBot.repository.repos;
 
-import com.akimatBot.entity.custom.Cheque;
 import com.akimatBot.entity.custom.GeneralShift;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

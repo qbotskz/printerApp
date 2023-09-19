@@ -1,13 +1,10 @@
 package com.akimatBot.utils.reports;
 
-import com.akimatBot.RestoranApplication;
 import com.akimatBot.config.Bot;
 import com.akimatBot.entity.custom.FoodOrder;
 import com.akimatBot.entity.custom.Guest;
 import com.akimatBot.entity.custom.OrderItem;
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.entity.enums.SocialNetwork;
-import com.akimatBot.entity.standart.User;
 import com.akimatBot.repository.TelegramBotRepositoryProvider;
 import com.akimatBot.repository.repos.MessageRepository;
 import com.akimatBot.repository.repos.OrderRepository;
@@ -20,12 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -34,7 +28,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 
@@ -47,8 +40,8 @@ public class OrderReportDaily {
     private final XSSFWorkbook workbook = new XSSFWorkbook();
     private final XSSFCellStyle style = workbook.createCellStyle();
     private Sheet sheets;
-    private final XSSFCellStyle       hLinkStyle      = workbook.createCellStyle();
-    private final XSSFCreationHelper creationHelper  = workbook.getCreationHelper();
+    private final XSSFCellStyle hLinkStyle = workbook.createCellStyle();
+    private final XSSFCreationHelper creationHelper = workbook.getCreationHelper();
 
     List<FoodOrder> orders;
 
@@ -61,7 +54,7 @@ public class OrderReportDaily {
 
     public void sendCompReport() {
 
-            createSummary();
+        createSummary();
     }
 
     private void createSummary() {
@@ -84,12 +77,12 @@ public class OrderReportDaily {
 
         createTitle(setStyle(), rowIndex,
                 Arrays.asList(("Номер чека;Дата;Вид Оплаты;Официант;Товар" +
-                ";Ед изм;Количество;Цена;Сумма").split(Const.SPLIT)));
+                        ";Ед изм;Количество;Цена;Сумма").split(Const.SPLIT)));
 //        rowIndex = 1;
 
         List<List<String>> reports = new ArrayList<>();
 
-        for (FoodOrder foodOrder : orders){
+        for (FoodOrder foodOrder : orders) {
             for (Guest guest : foodOrder.getGuests()) {
                 for (OrderItem item : guest.getOrderItems()) {
                     List<String> list = new ArrayList<>();
@@ -132,19 +125,20 @@ public class OrderReportDaily {
         }
     }
 
-    private void            insertToRowURL(int row, List<String> cellValues, CellStyle cellStyle) {
+    private void insertToRowURL(int row, List<String> cellValues, CellStyle cellStyle) {
         addCellValueLink(row, 9, cellValues.get(9), cellStyle);
         addCellValueLink(row, 12, cellValues.get(12), cellStyle);
     }
 
-    private void            addCellValueLink(int rowIndex, int cellIndex, String cellValue, CellStyle cellStyle) {
+    private void addCellValueLink(int rowIndex, int cellIndex, String cellValue, CellStyle cellStyle) {
         try {
             XSSFHyperlink link = creationHelper.createHyperlink(HyperlinkType.URL);
             link.setAddress(cellValue);
             sheets.getRow(rowIndex).getCell(cellIndex).setHyperlink(link);
             sheets.getRow(rowIndex).getCell(cellIndex).setCellStyle(cellStyle);
         } catch (Exception e) {
-            if (e.getMessage().contains("Address of hyperlink must be a valid URI")) sheets.getRow(rowIndex).getCell(cellIndex).setCellValue(" ");
+            if (e.getMessage().contains("Address of hyperlink must be a valid URI"))
+                sheets.getRow(rowIndex).getCell(cellIndex).setCellValue(" ");
         }
     }
 
@@ -159,7 +153,7 @@ public class OrderReportDaily {
 //            if ((cellIndex == 9 || cellIndex == 12) && row > 0){
 //                addCellValue(row, cellIndex++, "Скачать файл", cellStyle);
 //            }else{
-                addCellValue(row, cellIndex++, cellValue, cellStyle);
+            addCellValue(row, cellIndex++, cellValue, cellStyle);
 
 //            }
         }
@@ -242,28 +236,27 @@ public class OrderReportDaily {
     }
 
 
-    private void sendFile()  {
+    private void sendFile() {
         try {
 
 
-        String fileName = "Отчет.xlsx";
+            String fileName = "Отчет.xlsx";
 //        String.format(fileName, new Date().getTime());
-        String path = "src/main/resources/reports/" + fileName;
-        try  {
-            File file = new File(path);
-            file.mkdir();
-            FileOutputStream stream = new FileOutputStream(path);
-            workbook.write(stream);
-        } catch (IOException e) {
-            log.error("Can't send File error: ", e);
-        }
+            String path = "src/main/resources/reports/" + fileName;
+            try {
+                File file = new File(path);
+                file.mkdir();
+                FileOutputStream stream = new FileOutputStream(path);
+                workbook.write(stream);
+            } catch (IOException e) {
+                log.error("Can't send File error: ", e);
+            }
 
-        FTPConnectionService ftpConnectionService = new FTPConnectionService();
-        ftpConnectionService.connectInit();
-        ftpConnectionService.uploadFile(fileName, new FileInputStream(path));
+            FTPConnectionService ftpConnectionService = new FTPConnectionService();
+            ftpConnectionService.connectInit();
+            ftpConnectionService.uploadFile(fileName, new FileInputStream(path));
 //        sendFile(766856789, RestoranApplication.bot, fileName, path);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -273,7 +266,7 @@ public class OrderReportDaily {
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             SendDocument sendDocument = new SendDocument();
             InputFile inputFile = new InputFile();
-            inputFile.setMedia(fileInputStream,fileName);
+            inputFile.setMedia(fileInputStream, fileName);
 
             sendDocument.setDocument(inputFile);
             sendDocument.setChatId("766856789");

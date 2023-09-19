@@ -1,6 +1,5 @@
 package com.akimatBot.web.websocets;
 
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -20,7 +19,7 @@ public class WebSocketSessionManager {
     }
 
     public static WebSocketSession getSession(Long sessionId) {
-        for (Map.Entry<Long, WebSocketSession> session : sessions.entrySet()){
+        for (Map.Entry<Long, WebSocketSession> session : sessions.entrySet()) {
             System.out.println("Key = " + session.getKey() + " Value = " + session.getKey());
         }
         return sessions.get(sessionId);

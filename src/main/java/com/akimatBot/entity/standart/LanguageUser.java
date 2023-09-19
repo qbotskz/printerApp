@@ -18,6 +18,6 @@ public class LanguageUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private Long        chatId;
+    private Long chatId;
     private Language language;
 }

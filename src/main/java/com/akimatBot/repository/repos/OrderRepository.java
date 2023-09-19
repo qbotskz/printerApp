@@ -20,7 +20,7 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 
     FoodOrder findOrderById(long id);
 
-    @Query(value = "select fo.order_status from food_order fo where fo.order_status != 2 and fo.desk_id = ?1  ORDER BY ID DESC LIMIT 1",nativeQuery = true)
+    @Query(value = "select fo.order_status from food_order fo where fo.order_status != 2 and fo.desk_id = ?1  ORDER BY ID DESC LIMIT 1", nativeQuery = true)
     OrderStatus getStatusOfOrder(long deskId);
 
     @Query(value = "select fo.orderStatus from FoodOrder fo where fo.id = ?1")
@@ -29,7 +29,7 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 //    List<Order> findOrdersByCourierIsNullAndFinishedFalse();
 //    List<Order> findOrdersByOperatorIsNotNullAndFinishedIsFalse();
 
-//    FoodOrder findByIdAndDoneIsFalse(long id);
+    //    FoodOrder findByIdAndDoneIsFalse(long id);
     FoodOrder findById(long id);
 //    List<Order> findAllByUser_ChatId(String chatId);
 
@@ -45,7 +45,6 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
     @Query("select new PaymentTypeReport(pt, sum(p.amount), count(p) ) from PaymentType pt left join Payment p on pt.id = p.paymentType.id " +
             " where p.cheque.id in " +
             "(select fo.cheque.id from FoodOrder fo where fo.createdDate between ?1 and ?2 and fo.orderStatus = 2) group by pt")
-
     List<PaymentTypeReport> getTotalForPaymentTypesJPQL(Date openingTime, Date closingTime);
 
 
@@ -53,7 +52,8 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 //    @Query("select current_timestamp + '10 minutes'::interval")
 
     List<FoodOrder> findAllByCreatedDateBetweenOrderById(Date start, Date end);
-//    List<FoodOrder> findAllByDoneIsFalseOrderByCreatedDateDesc();
+
+    //    List<FoodOrder> findAllByDoneIsFalseOrderByCreatedDateDesc();
     //    List<OrderOfBooks> findAllByDoneFalseAndTicketReceivedTrueOrderByCreatedDateDesc();
 //    List<FoodOrder> findAllByDoneFalseOrderByCreatedDateDesc();
 //    List<FoodOrder> findAllByDoneFalseAndPaidTrueOrderByCreatedDateDesc();
@@ -62,12 +62,11 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
     List<FoodOrder> findAllByOrderStatusAndWaiterIsNullOrderByCreatedDate(OrderStatus orderStatus);
 
 
-//    List<FoodOrder> findAllByPaidIsNullOrderByCreatedDateDesc();
+    //    List<FoodOrder> findAllByPaidIsNullOrderByCreatedDateDesc();
     @Query(value = "select g.food_order_id from Guest g where g.client_id = (select u.id from users u where u.chat_id  = ?1)" +
             "            and (select fo.order_status = 2 from food_order fo where fo.id = g.food_order_id and fo.order_type = ?2 )" +
             "            ORDER BY ID DESC LIMIT 1", nativeQuery = true)
     FoodOrder getLastClientOrder(long chatId, OrderType in_the_restaurant);
-
 
 
 //    FoodOrder findLastByClientChatIdAndOrderTypeAndDoneIsFalse(long chatId, OrderType in_the_restaurant);
@@ -77,19 +76,23 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 //        return findLimited( chatId, in_the_restaurant, PageRequest.of(0, 10));
 //    }
 
-//    List<FoodOrder> findAllByWaiterChatIdAndDoneIsFalse(long chatId);
+    //    List<FoodOrder> findAllByWaiterChatIdAndDoneIsFalse(long chatId);
     List<FoodOrder> findAllByWaiterChatIdAndOrderStatusNot(long chatId, OrderStatus orderStatus);
+
     List<FoodOrder> findAllByWaiterCodeAndOrderStatusNot(long code, OrderStatus orderStatus);
 
     ///////////////////////////////////////////////////
     @Query("select fo from FoodOrder fo where fo.waiter.chatId = ?1 and fo.orderStatus = 2 and fo.createdDate >= fo.waiter.currentShift.openingTime")
     List<FoodOrder> getDoneOrdersOfWaiterByChatId(long chatId);
+
     ///////////////////////////////////////////////////
     List<FoodOrder> findAllByWaiterChatIdAndOrderStatus(long chatId, OrderStatus orderStatus);
 
     List<FoodOrder> findAllByDeskIdOrderById(long deskId);
-//    List<FoodOrder> findAllByDeskIdAndDoneIsFalse(long deskId);
+
+    //    List<FoodOrder> findAllByDeskIdAndDoneIsFalse(long deskId);
     List<FoodOrder> findAllByDeskIdAndOrderStatus(long deskId, OrderStatus orderStatus);
+
     FoodOrder findFirstByDeskIdAndOrderStatusNotOrderByIdDesc(long deskId, OrderStatus orderStatus);
 
     FoodOrder findLastByDeskIdAndOrderTypeAndOrderStatusNot(long deskId, OrderType in_the_restaurant, OrderStatus orderStatus);
@@ -99,7 +102,8 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 
     @Query("select count (ord) FROM FoodOrder ord where ord.waiter.code = ?1 and ord.orderStatus <> 3 and ord.orderStatus <> 2")
     long countActiveOrders(long code);
-//    boolean existsByWaiterCodeAndOrderStatusNot(long code, OrderStatus orderStatus);
+
+    //    boolean existsByWaiterCodeAndOrderStatusNot(long code, OrderStatus orderStatus);
     boolean existsByOrderStatusNot(OrderStatus orderStatus);
 
     @Query("select sum(item.price * item.quantity " +
@@ -109,6 +113,7 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
             " and (item.orderItemStatus = 0 or item.orderItemStatus = 1 or item.orderItemStatus = 2) " +
             "and item.guest.foodOrder.createdDate > item.guest.foodOrder.waiter.currentShift.openingTime and item.guest.foodOrder.orderStatus = 2")
     Double getClosedOrdersCash(Long code);
+
     @Query("select count (fo.desk.id) from FoodOrder fo where fo.waiter.id = ?1 and fo.orderStatus <> 2 and fo.orderStatus <> 3")
     long getDesksSize(long userId);
 
@@ -125,11 +130,13 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 
     @Query("select fo.createdDate from FoodOrder fo where fo.id = ?1")
     Date getCreatedDateByOrderId(long orderId);
+
     @Query("select fo.desk.id from FoodOrder fo where fo.id = ?1")
     long getDeskNumberById(long orderId);
 
     @Query("select fo.waiter.fullName from FoodOrder fo where fo.id = ?1")
     String getWaiterNameById(long orderId);
+
     @Query("select fo.desk.hall.name from FoodOrder fo where fo.id = ?1")
     String getHallNameById(long orderId);
 
@@ -141,10 +148,13 @@ public interface OrderRepository extends JpaRepository<FoodOrder, Integer> {
 
     @Query("select case when  fo.waiter.code = ?1 then true else false end from  FoodOrder fo where fo.id = ?2")
     boolean hisOrder(Long code, long orderId);
+
     @Query("select case when  fo.waiter.code = ?1 then true else false end from  FoodOrder fo where fo.cheque.id = ?2")
     boolean hisOrderByChequeId(Long code, long chequeId);
+
     @Query("select case when  guest.foodOrder.waiter.code = ?1 then true else false end from  Guest guest where guest.id = ?2")
     boolean hisOrderByGuestId(Long code, long guestId);
+
     @Query("select case when  item.guest.foodOrder.waiter.code = ?1 then true else false end from  OrderItem item where item.id = ?2")
     boolean hisOrderByOrderItemId(Long code, long orderItemId);
 

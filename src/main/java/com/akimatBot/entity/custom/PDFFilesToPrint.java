@@ -1,6 +1,5 @@
 package com.akimatBot.entity.custom;
 
-import com.akimatBot.entity.enums.CacheTypes;
 import lombok.Getter;
 import lombok.Setter;
 

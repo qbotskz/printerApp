@@ -1,10 +1,5 @@
 package com.akimatBot.utils;
 
-import org.telegram.telegrambots.bots.DefaultAbsSender;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,7 +8,7 @@ import java.util.Set;
 public class SetDeleteMessages {
 
     private static Map<Long, Set<Integer>> messagesWithKeyboardIds = new HashMap<>();
-    private static Map<Long, Set<Integer>> messagesIds             = new HashMap<>();
+    private static Map<Long, Set<Integer>> messagesIds = new HashMap<>();
 
 //    public  static void deleteKeyboard(long chatId, DefaultAbsSender bot) {
 //        try {
@@ -41,7 +36,9 @@ public class SetDeleteMessages {
 //        messagesWithKeyboardIds.put(chatId, new HashSet<>());
 //    }
 
-    public  static void addKeyboard(long chatId, int messageId) { add(messagesWithKeyboardIds, chatId, messageId); }
+    public static void addKeyboard(long chatId, int messageId) {
+        add(messagesWithKeyboardIds, chatId, messageId);
+    }
 
     private static void add(Map<Long, Set<Integer>> map, long chatId, int messageId) {
         if (map.get(chatId) == null) {

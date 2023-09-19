@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface KitchenPrintEntityRepo extends JpaRepository<PrintKitchenEntity,Long> {
+public interface KitchenPrintEntityRepo extends JpaRepository<PrintKitchenEntity, Long> {
 
     List<PrintKitchenEntity> findAllByOrderById();
 

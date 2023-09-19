@@ -11,10 +11,11 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface OrderItemDeleteEntityRepo extends JpaRepository<OrderItemDeleteEntity,Long> {
+public interface OrderItemDeleteEntityRepo extends JpaRepository<OrderItemDeleteEntity, Long> {
 
 
     List<OrderItemDeleteEntity> findAllByPrintedFalseOrderById();
+
     @Query("delete from OrderItemDeleteEntity p where p.id = ?1")
     @Modifying
     void deleteByOrderItem(long id);

@@ -11,13 +11,13 @@ import java.sql.SQLException;
 public class id089_addRestaurantBranch extends Command {
     @Override
     public boolean execute() throws TelegramApiException, IOException, SQLException, Exception {
-        switch (waitingType){
+        switch (waitingType) {
             case START:
                 getBranchName();
                 waitingType = WaitingType.GET_NAME;
                 return COMEBACK;
             case GET_NAME:
-                if(update.hasMessage()&&update.getMessage().hasText()){
+                if (update.hasMessage() && update.getMessage().hasText()) {
                     RestaurantBranch restaurantBranch = new RestaurantBranch();
                     restaurantBranch.setBranchName(update.getMessage().getText());
                     restaurantBranchRepo.save(restaurantBranch);
@@ -27,7 +27,8 @@ public class id089_addRestaurantBranch extends Command {
         }
         return false;
     }
-    private int getBranchName() throws TelegramApiException{
+
+    private int getBranchName() throws TelegramApiException {
         return sendMessage(208);
     }
 }

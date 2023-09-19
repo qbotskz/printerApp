@@ -8,16 +8,10 @@ import com.akimatBot.web.dto.FoodDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.telegram.telegrambots.bots.DefaultAbsSender;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 
-import java.io.*;
-import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -33,11 +27,11 @@ public class FoodService {
 
     public List<Food> searchFood(String foodName, int page, Language language) {
         System.out.println("Degugggggggggggg");
-        int a = (page-1)*10 +1;
-        int b = page*10;
+        int a = (page - 1) * 10 + 1;
+        int b = page * 10;
         if (language.equals(Language.ru))
-            return foodRepository.searchRu(foodName, a ,b);
-        return foodRepository.searchKz(foodName, a ,b);
+            return foodRepository.searchRu(foodName, a, b);
+        return foodRepository.searchKz(foodName, a, b);
     }
 
 //    @Autowired
@@ -46,8 +40,6 @@ public class FoodService {
 //        this.authorRepo = authorRepo;
 //        this.genreRepo = genreRepo;
 //    }
-
-
 
 
 //    @Transactional
@@ -229,7 +221,7 @@ public class FoodService {
 
     public List<FoodDTO> getFoodsDTO(List<Food> foods, Language language) {
         List<FoodDTO> dto = new ArrayList<>();
-        for (Food food : foods){
+        for (Food food : foods) {
             dto.add(food.getFoodDTO(language));
         }
         return dto;
@@ -241,7 +233,7 @@ public class FoodService {
 
     @Transactional
     public Food addToStopList(FoodDTO foodDTO) {
-        Food food  = findById(foodDTO.getId());
+        Food food = findById(foodDTO.getId());
         if (food != null && foodDTO.getRemains() >= 0) {
             food.setRemains(foodDTO.getRemains());
             food.setLastChanged(new Date());
@@ -250,9 +242,10 @@ public class FoodService {
         }
         return null;
     }
+
     @Transactional
     public boolean removeFromStopList(FoodDTO foodDTO) {
-        Food food  = findById(foodDTO.getId());
+        Food food = findById(foodDTO.getId());
         if (food != null) {
             food.setRemains(null);
             food.setLastChanged(new Date());

@@ -1,7 +1,6 @@
 package com.akimatBot.entity.custom;
 
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.entity.enums.OrderItemStatus;
 import com.akimatBot.entity.enums.OrderStatus;
 import com.akimatBot.entity.enums.OrderType;
 import com.akimatBot.entity.standart.Employee;
@@ -13,11 +12,11 @@ import com.akimatBot.web.dto.FoodOrderDTO;
 import com.akimatBot.web.dto.GuestDTO;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 //@Entity(name = "orders")
 @Getter
@@ -37,7 +36,7 @@ public class FoodOrder {
     @ManyToOne
     Desk desk;
 
-    @OneToMany(mappedBy="foodOrder")
+    @OneToMany(mappedBy = "foodOrder")
     private List<Guest> guests;
 
     private Boolean deliverNeed = false;
@@ -59,19 +58,20 @@ public class FoodOrder {
     public FoodOrder() {
 
     }
+
     public List<Guest> getGuests() {
         guests = TelegramBotRepositoryProvider.getGuestRepo()
                 .findAllByFoodOrderAndDeletedFalseOrderByIdAsc(this);
         return guests;
     }
+
     public long getGuestsSize() {
-        return  TelegramBotRepositoryProvider.getGuestRepo()
+        return TelegramBotRepositoryProvider.getGuestRepo()
                 .getGuestsSizeOfOrder(this.id);
     }
 
 
-
-    public void addGuest(Guest guest){
+    public void addGuest(Guest guest) {
         if (guests == null)
             guests = new ArrayList<>();
 
@@ -80,9 +80,9 @@ public class FoodOrder {
 
 
     public User getClientByChatId(long chatId) {
-        if (guests!= null){
-            for (Guest guest : guests){
-                if (guest.getClient().getChatId() == chatId){
+        if (guests != null) {
+            for (Guest guest : guests) {
+                if (guest.getClient().getChatId() == chatId) {
                     return guest.getClient();
                 }
             }
@@ -92,10 +92,9 @@ public class FoodOrder {
 
     public void minusItem(OrderItem orderItem, int quantity) {
 
-        if (orderItem.getQuantity() == quantity){
+        if (orderItem.getQuantity() == quantity) {
             TelegramBotRepositoryProvider.getOrderItemRepository().delete(orderItem);
-        }
-        else {
+        } else {
             orderItem.setQuantity(orderItem.getQuantity() - quantity);
             TelegramBotRepositoryProvider.getOrderItemRepository().save(orderItem);
         }
@@ -118,6 +117,7 @@ public class FoodOrder {
 
         return foodOrderDTO;
     }
+
     public FoodOrderDTO getFoodOrderDTO(Language language) {
 
         FoodOrderDTO foodOrderDTO = new FoodOrderDTO();
@@ -136,6 +136,7 @@ public class FoodOrder {
 
         return foodOrderDTO;
     }
+
     public FoodOrderDTO getFoodOrderDTOByChatId(Language language, Long chatId) {
 
         FoodOrderDTO foodOrderDTO = new FoodOrderDTO();
@@ -190,7 +191,7 @@ public class FoodOrder {
 
         List<GuestDTO> items = new ArrayList<>();
 
-        for (Guest guest :  getGuests()) {
+        for (Guest guest : getGuests()) {
             items.add(guest.getGuestDTO(language));
         }
 
@@ -218,7 +219,6 @@ public class FoodOrder {
 //                ", paid=" + paid +
 //                '}';
 //    }
-
 
 
 //    public void addTotal(int totalPrice) {

@@ -1,7 +1,5 @@
 package com.akimatBot.repository.repos;
 
-import com.akimatBot.entity.custom.CartItem;
-import com.akimatBot.entity.custom.Food;
 import com.akimatBot.entity.custom.FoodOrder;
 import com.akimatBot.entity.custom.Guest;
 import com.akimatBot.entity.enums.OrderStatus;

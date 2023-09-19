@@ -1,7 +1,6 @@
 package com.akimatBot.repository.repos;
 
 import com.akimatBot.entity.custom.PrintPrecheck;
-import com.akimatBot.entity.standart.Button;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

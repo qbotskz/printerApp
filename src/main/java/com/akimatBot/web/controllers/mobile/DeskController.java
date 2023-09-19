@@ -28,9 +28,9 @@ public class DeskController {
     EmployeeService employeeService;
 
     @GetMapping("/getAll")
-    public Object getAllTable(){
+    public Object getAllTable() {
         List<DeskDTO> all = new ArrayList<>();
-        for (Desk desk : deskRepo.findAll()){
+        for (Desk desk : deskRepo.findAll()) {
             all.add(desk.getDeskDTONotFull());
         }
         return all;
@@ -38,7 +38,7 @@ public class DeskController {
 
 
     @GetMapping("/getAll/active")
-    public List<DeskDTO> getActiveDesksMy(@RequestParam("chatId") long chatId){
+    public List<DeskDTO> getActiveDesksMy(@RequestParam("chatId") long chatId) {
 
         int a = 5;
         System.out.println("ASDADSaSDADASdasD");
@@ -46,7 +46,7 @@ public class DeskController {
         List<Desk> desks = deskRepo.getActiveDesks(chatId);
 
         List<DeskDTO> ls = new ArrayList<>();
-        for (Desk desk : desks){
+        for (Desk desk : desks) {
             if (desk != null) {
                 ls.add(desk.getDeskDTOFullByChatId(Language.ru, chatId));
             }
@@ -55,12 +55,10 @@ public class DeskController {
     }
 
 
-
-
     @GetMapping("/getOne")
     public DeskDTO getOne(@RequestParam("deskId") long deskId,
-                          @RequestHeader(value = "chatId", defaultValue = "1") long chatId){
+                          @RequestHeader(value = "chatId", defaultValue = "1") long chatId) {
         Desk desk = deskRepo.findById(deskId);
-       return desk.getDeskDTOFullByChatId(Language.ru, chatId);
+        return desk.getDeskDTOFullByChatId(Language.ru, chatId);
     }
 }

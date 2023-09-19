@@ -16,7 +16,6 @@ public enum SocialNetwork {
     private final int id;
 
 
-
     public static SocialNetwork getById(int id) {
         for (SocialNetwork socialNetwork : values()) {
             if (socialNetwork.id == id)

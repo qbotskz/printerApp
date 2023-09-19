@@ -68,21 +68,19 @@ public class WaiterController {
     PasswordEncoder encoder;
 
 
-
-
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId) && " +
             "@permissionEvaluator.isActiveOrderByOrderId(#orderId)")
     @PostMapping("/cookOrder")
     public ResponseEntity<Object> createOrderRest(
-                                               @RequestParam("orderId") long orderId,
-                                               @RequestHeader(value="chatId") long chatId
-    ){
+            @RequestParam("orderId") long orderId,
+            @RequestHeader(value = "chatId") long chatId
+    ) {
         try {
-            if (orderService.cookOrder(orderId)){
+            if (orderService.cookOrder(orderId)) {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>("Check remains!!!", HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
         }
@@ -91,8 +89,8 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/eatOrderItem")
     public Boolean eatOrderItem(@RequestParam("orderItemId") long orderItemId,
-                                @RequestHeader(value="chatId") long chatId
-    ){
+                                @RequestHeader(value = "chatId") long chatId
+    ) {
 
         try {
 
@@ -107,7 +105,7 @@ public class WaiterController {
             orderItemRepository.save(orderItem);
 
             return orderItem.getOrderItemStatus().equals(OrderItemStatus.EAT);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
@@ -117,13 +115,13 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/editDiscount")
     public ResponseEntity<Object> editDiscount(@RequestParam("chequeId") long chequeId,
-                                            @RequestParam("discount") double discount,
-                                            @RequestHeader(value="chatId") long chatId
-    ){
+                                               @RequestParam("discount") double discount,
+                                               @RequestHeader(value = "chatId") long chatId
+    ) {
 
         try {
-            return new ResponseEntity<>(orderService.editDiscount(chequeId ,discount).getChequeDTO(), HttpStatus.OK);
-        }catch (Exception e){
+            return new ResponseEntity<>(orderService.editDiscount(chequeId, discount).getChequeDTO(), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
         }
 
@@ -132,13 +130,13 @@ public class WaiterController {
 
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/editService")
-    public ResponseEntity<Object>  editService(@RequestParam("chequeId") long chequeId,
-                                            @RequestParam("service") double service,
-                                           @RequestHeader(value="chatId") long chatId
-    ){
+    public ResponseEntity<Object> editService(@RequestParam("chequeId") long chequeId,
+                                              @RequestParam("service") double service,
+                                              @RequestHeader(value = "chatId") long chatId
+    ) {
         try {
-            return new ResponseEntity<>(orderService.editService(chequeId ,service).getChequeDTO(), HttpStatus.OK);
-        }catch (Exception e){
+            return new ResponseEntity<>(orderService.editService(chequeId, service).getChequeDTO(), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
         }
 
@@ -147,10 +145,10 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/orderItem/editQuantity") // returns desk full json
     public ResponseEntity<Object> editCountOfOrderItem(@RequestParam("orderItemId") long orderItemId,
-                                                    @RequestParam("quantity") int quantity,
-                                                    @RequestParam(value = "comment", required=false) String comment,
-                                                    @RequestHeader(value="chatId") long chatId
-    ){
+                                                       @RequestParam("quantity") int quantity,
+                                                       @RequestParam(value = "comment", required = false) String comment,
+                                                       @RequestHeader(value = "chatId") long chatId
+    ) {
         try {
             OrderItem orderItem = orderItemRepository.getOne(orderItemId);
             if (orderItem.getOrderItemStatus().equals(OrderItemStatus.IN_CART) && quantity < 100) {
@@ -159,7 +157,7 @@ public class WaiterController {
                         HttpStatus.OK);
             }
             return new ResponseEntity<>("Order item is not in the cart", HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 //            return new AnswerDTO("Error!").getJson();
         }
@@ -168,12 +166,12 @@ public class WaiterController {
 
 
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId) " +
-               "&& @permissionEvaluator.isActiveOrderByOrderItem(#item.orderItem.id)")
+            "&& @permissionEvaluator.isActiveOrderByOrderItem(#item.orderItem.id)")
     @PostMapping("/orderItem/delete")
     public Object editCountOfOrderItem(
             @RequestBody OrderItemDeleteDTO item,
-            @RequestHeader(value="chatId") long chatId
-    ){
+            @RequestHeader(value = "chatId") long chatId
+    ) {
 
         try {
 
@@ -198,14 +196,14 @@ public class WaiterController {
 //////////////////////////////////////////////////////////////////////////////////
             OrderItem orderItem2 = orderItemRepository.getOne(item.getOrderItem().getId());
             Desk desk = orderItem2.getGuest().getFoodOrder().getDesk();
-            if (orderService.cancelOrderItem(item)){
+            if (orderService.cancelOrderItem(item)) {
                 return new ResponseEntity<>(desk.getDeskDTOFull(Language.ru, chatId), HttpStatus.OK);
             }
-            return new ResponseEntity<>("Where is comment????!!!!\uD83D\uDE20\uD83D\uDE20\uD83D\uDE20",HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Where is comment????!!!!\uD83D\uDE20\uD83D\uDE20\uD83D\uDE20", HttpStatus.FORBIDDEN);
 
 //////////////////////////////////////////////////////////////////////////////////
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new AnswerDTO("Error!").getJson();
         }
@@ -213,33 +211,30 @@ public class WaiterController {
     }
 
 
-
-
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/guest/delete")
     public Object deleteOrder(
             @RequestBody GuestDTO guestDTO,
-            @RequestHeader(value="chatId") long chatId
-    ){
+            @RequestHeader(value = "chatId") long chatId
+    ) {
         try {
             //todo сделать сервис и переместить туда
             Guest guest = guestRepo.getOne(guestDTO.getId());
             Desk currentDesk = guest.getFoodOrder().getDesk();
             FoodOrder currentOrder = guest.getFoodOrder();
-            if (guestRepo.getOrderItemsSize(guestDTO.getId()) == 0){
+            if (guestRepo.getOrderItemsSize(guestDTO.getId()) == 0) {
                 guestRepo.delete(guest.getId());
-                if (currentOrder.getGuestsSize() == 0){
+                if (currentOrder.getGuestsSize() == 0) {
                     currentDesk.setCurrentOrder(null);
                     deskRepo.save(currentDesk);
                     orderService.delete(currentOrder);
                 }
-                return  new ResponseEntity<>(HttpStatus.OK);
-            }
-            else {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
                 return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
@@ -249,16 +244,16 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/editPrepayment")
     public ResponseEntity<Object> editPrepayment(@RequestParam("chequeId") long chequeId,
-                                              @RequestParam("prepayment") double prepayment,
-                                              @RequestHeader(value="chatId") long chatId
-    ){
+                                                 @RequestParam("prepayment") double prepayment,
+                                                 @RequestHeader(value = "chatId") long chatId
+    ) {
 
         try {
 
             return new ResponseEntity<>(orderService.editPrepayment(chequeId, prepayment).getChequeDTO(),
                     HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
         }
 
@@ -269,45 +264,41 @@ public class WaiterController {
             "&& @permissionEvaluator.isActiveOrderGuestId(#guestId)")
     @PostMapping("/addToCart")
     public Object addToCart(@RequestParam("foodId") int foodId,
-                                         @RequestParam("guestId") long guestId,
-                                         @RequestHeader(value="chatId") long chatId){
+                            @RequestParam("guestId") long guestId,
+                            @RequestHeader(value = "chatId") long chatId) {
 
         try {
             return orderService.addToCartMobile(foodId, guestId).getGuest().getFoodOrder().getDesk().getDeskDTOFullByChatId(Language.ru, chatId);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Map<Object, Object> ans = new TreeMap<>();
-            ans.put("answer" , "error");
+            ans.put("answer", "error");
             return ans;
         }
     }
-
-
 
 
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/createEmptyOrder")
     public Object createEmptyOrder(
-                                         @RequestParam("deskId") long deskId,
-                                         @RequestHeader(value="chatId") long chatId){
+            @RequestParam("deskId") long deskId,
+            @RequestHeader(value = "chatId") long chatId) {
         try {
             FoodOrder foodOrder = orderService.createEmptyOrderByChatId(deskId, chatId);
             return foodOrder.getFoodOrderDTOByChatId(Language.ru, chatId);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Map<Object, Object> ans = new TreeMap<>();
-            ans.put("answer" , "error");
+            ans.put("answer", "error");
             return ans;
         }
     }
 
 
-
-
     @GetMapping("/getCart")
-    public  Map<Object, Object> getCart(@RequestParam("deskId") long tableId,
-                                        @RequestParam("chatId") long chatId){
+    public Map<Object, Object> getCart(@RequestParam("deskId") long tableId,
+                                       @RequestParam("chatId") long chatId) {
 
 
         List<CartItem> cartItems = cartItemService.findAllCartItemsOfTable(tableId);
@@ -315,24 +306,23 @@ public class WaiterController {
         Map<Object, Object> data = new TreeMap<>();
 
 
-
         List<Map<Object, Object>> books = new ArrayList<>();
-        for (CartItem cartItem : cartItems){
+        for (CartItem cartItem : cartItems) {
             Map<Object, Object> ans = new TreeMap<>();
-            ans.put("id" , cartItem.getId());
-            ans.put("quantity" , cartItem.getQuantity());
-            ans.put("item" , cartItem.getFood().getJson(user.getLanguage()));
+            ans.put("id", cartItem.getId());
+            ans.put("quantity", cartItem.getQuantity());
+            ans.put("item", cartItem.getFood().getJson(user.getLanguage()));
             books.add(ans);
         }
 
 
         data.put("cartItems", books);
 
-        return data ;
+        return data;
     }
 
     @GetMapping("/getName")
-    public String getCart(@RequestParam("chatId") long chatId){
+    public String getCart(@RequestParam("chatId") long chatId) {
         return employeeService.getNameByChatId(chatId);
     }
 
@@ -344,22 +334,16 @@ public class WaiterController {
 //    }
 
 
-
-
-
-
-
     @GetMapping("/getOrders/active")
-    public Object getActiveOrder(@RequestParam("chatId") long chatId){
+    public Object getActiveOrder(@RequestParam("chatId") long chatId) {
         List<FoodOrder> orders = orderService.getActiveOrdersOfWaiter(chatId);
-        if(orders.size() > 0) {
+        if (orders.size() > 0) {
             List<FoodOrderDTO> orjsns = new ArrayList<>();
-            for (FoodOrder fo : orders){
+            for (FoodOrder fo : orders) {
                 orjsns.add(fo.getFoodOrderDTOByChatId(Language.ru, chatId));
             }
             return orjsns;
-        }
-        else{
+        } else {
             return new AnswerDTO("order is empty").getJson();
         }
     }
@@ -392,9 +376,9 @@ public class WaiterController {
             "&& @permissionEvaluator.isActiveOrderByOrderItem(#orderItemId)")
     @PostMapping("/order/cut")
     public DeskDTO cutOrderItem(@RequestParam("orderItemId") long orderItemId,
-                                            @RequestParam("quantity") int quantity,
-                                            @RequestParam("toGuestId") long toGuestId,
-                                            @RequestHeader(value = "chatId", defaultValue = "1") long chatId){
+                                @RequestParam("quantity") int quantity,
+                                @RequestParam("toGuestId") long toGuestId,
+                                @RequestHeader(value = "chatId", defaultValue = "1") long chatId) {
 
         return orderService.cut(orderItemId, quantity, toGuestId, chatId);
 
@@ -405,25 +389,25 @@ public class WaiterController {
             "@permissionEvaluator.isNotDoneOrderByOrderId(#orderId)")
     @PostMapping("/order/precheck")
     public ResponseEntity<Object> cutOrderItem(@RequestParam("orderId") long orderId,
-                                            @RequestHeader(value = "chatId", defaultValue = "1") long chatId){
+                                               @RequestHeader(value = "chatId", defaultValue = "1") long chatId) {
         FoodOrder foodOrder = orderService.precheck(orderId);
-        if (foodOrder != null){
+        if (foodOrder != null) {
             return new ResponseEntity<>(foodOrder.getDesk().getDeskDTOFullByChatId(Language.ru, chatId), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Order is empty!!!" , HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Order is empty!!!", HttpStatus.BAD_REQUEST);
     }
 
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/order/precheck/cancel")
     public DeskDTO cancelPrecheck(@RequestParam("orderId") long orderId,
-                                            @RequestHeader(value = "chatId", defaultValue = "1") long chatId){
+                                  @RequestHeader(value = "chatId", defaultValue = "1") long chatId) {
 
         return orderService.doNotPrecheck(orderId).getDesk().getDeskDTOFullByChatId(Language.ru, chatId);
 
     }
 
     @PostMapping("/shift/open")
-    public ResponseEntity<Object> openShift(@RequestHeader(value="chatId") long chatId){
+    public ResponseEntity<Object> openShift(@RequestHeader(value = "chatId") long chatId) {
 
         if (waiterShiftService.openShiftByChatId(chatId))
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -433,9 +417,9 @@ public class WaiterController {
 
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/shift/close")
-    public Object closeShift(@RequestHeader(value="chatId") long chatId) {
+    public Object closeShift(@RequestHeader(value = "chatId") long chatId) {
 
-        if (orderService.hasNotDoneOfWaiterByChatId(chatId) && waiterShiftService.closeShiftByChatId(chatId)){
+        if (orderService.hasNotDoneOfWaiterByChatId(chatId) && waiterShiftService.closeShiftByChatId(chatId)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
@@ -444,9 +428,9 @@ public class WaiterController {
     }
 
     @GetMapping("/shift/isOpen")
-    public  Map<Object, Object> isOpenShiftByChatId(@RequestHeader(value="chatId") long chatId){
+    public Map<Object, Object> isOpenShiftByChatId(@RequestHeader(value = "chatId") long chatId) {
         WaiterShift waiterShift = waiterShiftService.getOpenedShiftByChatId(chatId);
-        if (waiterShift != null){
+        if (waiterShift != null) {
             return new WaiterShiftDTO(true, waiterShift.getOpeningTime()).getJson();
         }
         return new WaiterShiftDTO(false, null).getJson();
@@ -454,12 +438,12 @@ public class WaiterController {
 
 
     @GetMapping("/getAll")
-    public  List<WaiterDTO> getAllWaiters(@RequestHeader(value="chatId") long chatId){
+    public List<WaiterDTO> getAllWaiters(@RequestHeader(value = "chatId") long chatId) {
         return waiterService.getAllActiveWaiters(chatId, Language.ru);
     }
 
     @GetMapping("/getOne")
-    public WaiterDTO getOneWaiter(@RequestParam("chatId") long chatId){
+    public WaiterDTO getOneWaiter(@RequestParam("chatId") long chatId) {
 
 
         return waiterService.getOne(chatId, Language.ru);
@@ -468,11 +452,11 @@ public class WaiterController {
 
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @GetMapping("/getPaymentTypes")
-    public List<PaymentMethodDTO> getPaymentTypes(@RequestHeader("chatId") long chatId){
+    public List<PaymentMethodDTO> getPaymentTypes(@RequestHeader("chatId") long chatId) {
 
         List<PaymentMethod> methods = paymentMethodRepo.findAllByActiveIsTrueOrderById();
         List<PaymentMethodDTO> dtos = new ArrayList<>();
-        for (PaymentMethod method : methods){
+        for (PaymentMethod method : methods) {
             dtos.add(method.getPaymentMethodDTO());
         }
 
@@ -483,9 +467,9 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/order/addPayment")
     public ChequeDTO addPaymentToOrder(@RequestHeader("chatId") long chatId,
-                                       @RequestParam ("chequeId") long chequeId,
+                                       @RequestParam("chequeId") long chequeId,
                                        @RequestParam("paymentTypeId") long paymentTypeId,
-                                       @RequestParam("amount") double amount){
+                                       @RequestParam("amount") double amount) {
 
         return orderService.addPaymnetToCheque(chequeId, paymentTypeId, amount).getChequeDTO();
 
@@ -494,7 +478,7 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/order/deletePayment")
     public ChequeDTO addPaymentToOrder(@RequestHeader("chatId") long chatId,
-                                       @RequestBody PaymentDTO paymentDTO){
+                                       @RequestBody PaymentDTO paymentDTO) {
 
         return orderService.deletePaymnet(paymentDTO).getChequeDTO();
 
@@ -504,11 +488,10 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @PostMapping("/order/pay")
     public Object payOrder(@RequestHeader("chatId") long chatId,
-                           @RequestBody ChequeDTO chequeDTO){
-        if (orderService.pay(chequeDTO) ){
+                           @RequestBody ChequeDTO chequeDTO) {
+        if (orderService.pay(chequeDTO)) {
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else {
+        } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -518,11 +501,10 @@ public class WaiterController {
     @PreAuthorize("@permissionEvaluator.isOpenShiftByChatId(#chatId)")
     @GetMapping("/order/getOne")
     public FoodOrderDTO payOrder(@RequestHeader("chatId") long chatId,
-                           @RequestParam("foodOrderId") long foodOrderId){
+                                 @RequestParam("foodOrderId") long foodOrderId) {
 
         return orderService.findById(foodOrderId).getFoodOrderDTOByChatId(Language.ru, chatId);
     }
-
 
 
 //    @PostMapping("/login")
@@ -537,10 +519,9 @@ public class WaiterController {
 
 
     @GetMapping("/getRoles")
-    public List<RoleDTO> getRoles(@RequestHeader("chatId") long chatId){
+    public List<RoleDTO> getRoles(@RequestHeader("chatId") long chatId) {
         return employeeService.getRolesDTOByChatId(chatId);
     }
-
 
 
 }

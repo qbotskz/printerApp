@@ -2,7 +2,6 @@ package com.akimatBot.command.impl;
 
 import com.akimatBot.command.Command;
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.entity.enums.WaitingType;
 import com.akimatBot.entity.standart.Role;
 import com.akimatBot.entity.standart.User;
 import com.akimatBot.repository.TelegramBotRepositoryProvider;

@@ -12,8 +12,8 @@ import javax.persistence.Id;
 public class Keyboard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long     id;
-    private String      buttonIds;
-    private boolean     inline;
-    private String      comment;
+    private long id;
+    private String buttonIds;
+    private boolean inline;
+    private String comment;
 }

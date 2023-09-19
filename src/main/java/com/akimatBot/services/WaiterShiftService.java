@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Service
 @Transactional
-@Component(value="WaiterShiftService")
+@Component(value = "WaiterShiftService")
 public class WaiterShiftService {
 
     @Autowired
@@ -24,9 +24,9 @@ public class WaiterShiftService {
     @Autowired
     GeneralShiftService generalShiftService;
 
-    public boolean openShift(long code){
+    public boolean openShift(long code) {
 
-        if(!waiterShiftRepo.existsByWaiterCodeAndClosingTimeIsNull(code) && generalShiftService.hasOpenedShift()){
+        if (!waiterShiftRepo.existsByWaiterCodeAndClosingTimeIsNull(code) && generalShiftService.hasOpenedShift()) {
             Employee user = employeeService.findByCode(code);
             WaiterShift waiterShift = new WaiterShift();
             waiterShift.setWaiter(user);
@@ -40,9 +40,9 @@ public class WaiterShiftService {
         return false;
     }
 
-    public boolean openShiftByChatId(long waiterChatId){
+    public boolean openShiftByChatId(long waiterChatId) {
 
-        if(!waiterShiftRepo.existsByWaiterChatIdAndClosingTimeIsNull(waiterChatId) && generalShiftService.hasOpenedShift()){
+        if (!waiterShiftRepo.existsByWaiterChatIdAndClosingTimeIsNull(waiterChatId) && generalShiftService.hasOpenedShift()) {
             Employee user = employeeService.findByChatId(waiterChatId);
             WaiterShift waiterShift = new WaiterShift();
             waiterShift.setWaiter(user);
@@ -59,7 +59,7 @@ public class WaiterShiftService {
     public boolean closeShift(long code) {
 
         WaiterShift waiterShift = getOpenedShift(code);
-        if (waiterShift != null){
+        if (waiterShift != null) {
             waiterShift.setClosingTime(new Date());
             waiterShiftRepo.save(waiterShift);
 
@@ -69,10 +69,11 @@ public class WaiterShiftService {
         }
         return false;
     }
+
     public boolean closeShiftByChatId(long chatId) {
 
         WaiterShift waiterShift = getOpenedShiftByChatId(chatId);
-        if (waiterShift != null){
+        if (waiterShift != null) {
             waiterShift.setClosingTime(new Date());
             waiterShiftRepo.save(waiterShift);
 
@@ -92,12 +93,13 @@ public class WaiterShiftService {
     }
 
     public void closeAllShifts() {
-         waiterShiftRepo.closeAllShifts();
+        waiterShiftRepo.closeAllShifts();
     }
 
     public WaiterShift getOpenedShift(long code) {
         return waiterShiftRepo.getCurrentShift(code);
     }
+
     public WaiterShift getOpenedShiftByChatId(long chatId) {
         return waiterShiftRepo.getCurrentShiftByChatId(chatId);
     }

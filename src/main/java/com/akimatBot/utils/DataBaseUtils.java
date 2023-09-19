@@ -15,7 +15,9 @@ import java.util.Date;
 
 public class DataBaseUtils extends JdbcTemplate {
 
-    public              DataBaseUtils(DataSource source) { super(source); }
+    public DataBaseUtils(DataSource source) {
+        super(source);
+    }
 
     public DataTable query(String sql) throws DataAccessException {
         DataTable dataTable = new DataTable();
@@ -23,25 +25,29 @@ public class DataBaseUtils extends JdbcTemplate {
         return dataTable;
     }
 
-    public DataTable    query(String sql, Object... args) throws DataAccessException {
+    public DataTable query(String sql, Object... args) throws DataAccessException {
         DataTable dataTable = new DataTable();
         dataTable.addAll(this.query(sql, args, new DataRecRowMapper()));
         return dataTable;
     }
 
-    public DataRec      queryDataRec(String sql) throws DataAccessException { return (DataRec) this.queryForObject(sql, new DataRecRowMapper()); }
+    public DataRec queryDataRec(String sql) throws DataAccessException {
+        return (DataRec) this.queryForObject(sql, new DataRecRowMapper());
+    }
 
-    public DataRec      queryDataRec(String sql, Object... args) throws DataAccessException { return (DataRec) this.queryForObject(sql, args, new DataRecRowMapper()); }
+    public DataRec queryDataRec(String sql, Object... args) throws DataAccessException {
+        return (DataRec) this.queryForObject(sql, args, new DataRecRowMapper());
+    }
 
-    public long         updateForKeyId(String sql, Object... args) {
-        KeyHolder holder            = new GeneratedKeyHolder();
+    public long updateForKeyId(String sql, Object... args) {
+        KeyHolder holder = new GeneratedKeyHolder();
         this.update((connection) -> {
-            PreparedStatement ps    = connection.prepareStatement(sql, new String[]{"id"});
-            int index               = 1;
-            Object[] var5           = args;
-            int var6                = args.length;
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            int index = 1;
+            Object[] var5 = args;
+            int var6 = args.length;
             for (int var7 = 0; var7 < var6; ++var7) {
-                Object arg          = var5[var7];
+                Object arg = var5[var7];
                 if (arg instanceof Date) {
                     ps.setTimestamp(index, new Timestamp(((Date) arg).getTime()));
                 } else if (arg instanceof Integer) {
@@ -52,7 +58,9 @@ public class DataBaseUtils extends JdbcTemplate {
                     ps.setDouble(index, (Double) arg);
                 } else if (arg instanceof Float) {
                     ps.setFloat(index, (Float) arg);
-                } else { ps.setString(index, (String) arg); }
+                } else {
+                    ps.setString(index, (String) arg);
+                }
                 ++index;
             }
             return ps;

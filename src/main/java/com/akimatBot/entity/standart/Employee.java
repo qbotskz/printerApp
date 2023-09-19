@@ -2,9 +2,7 @@ package com.akimatBot.entity.standart;
 
 import com.akimatBot.entity.custom.RestaurantBranch;
 import com.akimatBot.entity.custom.WaiterShift;
-import com.akimatBot.entity.enums.Gender;
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.repository.TelegramBotRepositoryProvider;
 import com.akimatBot.web.dto.EmployeeDTO;
 import com.akimatBot.web.dto.RoleDTO;
 import lombok.Getter;
@@ -21,21 +19,21 @@ import java.util.List;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long     id;
+    private long id;
 
-    private long        chatId;
+    private long chatId;
 
 
-    private String      phone;
+    private String phone;
 
-    private String      fullName;
-    private String      login;
-    private String      password;
-    private String      position;
-    private Long      code;
+    private String fullName;
+    private String login;
+    private String password;
+    private String position;
+    private Long code;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean      deleted;
+    private boolean deleted;
 
     @Enumerated
     Language language;
@@ -66,9 +64,9 @@ public class Employee {
         return employeeDTO;
     }
 
-    public List<RoleDTO> getRolesDTO( ) {
+    public List<RoleDTO> getRolesDTO() {
         List<RoleDTO> dtos = new ArrayList<>();
-        for (Role role : this.roles){
+        for (Role role : this.roles) {
             dtos.add(role.getDTO());
         }
         return dtos;

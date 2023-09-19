@@ -1,7 +1,6 @@
 package com.akimatBot.web.dto;
 
 
-import com.akimatBot.entity.custom.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
 

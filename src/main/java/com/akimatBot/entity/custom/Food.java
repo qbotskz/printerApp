@@ -1,7 +1,6 @@
 package com.akimatBot.entity.custom;
 
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.repository.TelegramBotRepositoryProvider;
 import com.akimatBot.utils.DateUtil;
 import com.akimatBot.web.dto.FoodDTO;
 import com.akimatBot.web.dto.KitchenDTO;
@@ -20,7 +19,7 @@ import java.util.*;
 public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long     id;
+    private long id;
     @Column(length = 4096)
     private String nameRu;
     private String descriptionRu;
@@ -62,19 +61,18 @@ public class Food {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Kitchen> kitchens;
 
-    public String getFoodDescription(Language lang){
-        if(lang == Language.ru){
+    public String getFoodDescription(Language lang) {
+        if (lang == Language.ru) {
             return descriptionRu;
-        }
-        else {
+        } else {
             return descriptionKz;
         }
     }
-    public String getFoodName(Language lang){
-        if(lang == Language.ru){
+
+    public String getFoodName(Language lang) {
+        if (lang == Language.ru) {
             return nameRu;
-        }
-        else if (lang == Language.kz){
+        } else if (lang == Language.kz) {
             return nameKz;
         }
         return getNameKitchen();
@@ -121,7 +119,7 @@ public class Food {
 
     private List<KitchenDTO> getKitchensDTO() {
         List<KitchenDTO> dtos = new ArrayList<>();
-        for (Kitchen kitchen : this.kitchens){
+        for (Kitchen kitchen : this.kitchens) {
             dtos.add(kitchen.getDTO());
         }
         return dtos;

@@ -12,7 +12,7 @@ import java.util.Date;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int     id;
+    private int id;
     private StarGrade reviewGrade;
     private String reviewText;
     @ManyToOne

@@ -13,16 +13,16 @@ import javax.persistence.Id;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long     id;
-    private String   name;
-    private String   photo;
+    private long id;
+    private String name;
+    private String photo;
     private Long keyboardId;
-    private String   file;
+    private String file;
     private FileType fileType;
     private int langId;
 
     public void setFile(String file, FileType fileType) {
-        this.file       = file;
-        this.fileType   = fileType;
+        this.file = file;
+        this.fileType = fileType;
     }
 }

@@ -1,7 +1,6 @@
 package com.akimatBot.entity.custom;
 
 import com.akimatBot.entity.standart.Employee;
-import com.akimatBot.entity.standart.User;
 import com.akimatBot.utils.DateUtil;
 import com.akimatBot.web.dto.GeneralShiftDTO;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.util.Objects;
 public class GeneralShift {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int     id;
+    private int id;
 
     @ManyToOne
     Employee openedBy;
@@ -27,7 +26,7 @@ public class GeneralShift {
     private Date closingTime;
 
 
-    public GeneralShiftDTO getDTO(){
+    public GeneralShiftDTO getDTO() {
         GeneralShiftDTO generalShiftDTO = new GeneralShiftDTO();
         generalShiftDTO.setId(this.getId());
         generalShiftDTO.setOpenedBy(this.openedBy.getDTO());

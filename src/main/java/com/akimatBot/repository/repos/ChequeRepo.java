@@ -2,12 +2,9 @@ package com.akimatBot.repository.repos;
 
 import com.akimatBot.entity.custom.Cheque;
 import com.akimatBot.entity.enums.OrderStatus;
-import com.akimatBot.web.dto.ChequeDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface ChequeRepo extends JpaRepository<Cheque, Long> {

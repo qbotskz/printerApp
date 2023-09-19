@@ -1,15 +1,9 @@
 package com.akimatBot.web.dto;
 
-import com.akimatBot.entity.custom.FoodOrder;
-import com.akimatBot.entity.custom.Payment;
-import com.akimatBot.entity.custom.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 
 @Getter

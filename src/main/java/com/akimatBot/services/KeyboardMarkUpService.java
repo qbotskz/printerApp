@@ -29,11 +29,11 @@ public class KeyboardMarkUpService {
         Keyboard keyboard = keyboardMarkUpRepository.findById(keyboardId);
 
         String[] rows = keyboard.getButtonIds().split(";");
-        return getInlineKeyboard(rows,langId);
+        return getInlineKeyboard(rows, langId);
 
     }
 
-    public ReplyKeyboard  select(long keyboardMarkUpId, long chatId) {
+    public ReplyKeyboard select(long keyboardMarkUpId, long chatId) {
         if (keyboardMarkUpId < 0) {
             return new ReplyKeyboardRemove();
         }
@@ -42,13 +42,13 @@ public class KeyboardMarkUpService {
         }
 
         Language language = getLanguage(chatId);
-        if(language == null){
+        if (language == null) {
             language = Language.ru;
         }
         return getKeyboard(keyboardMarkUpRepository.findById(keyboardMarkUpId), language.getId());
     }
 
-    private ReplyKeyboard           getKeyboard(Keyboard keyboard, int langId) {
+    private ReplyKeyboard getKeyboard(Keyboard keyboard, int langId) {
         String buttonIds = keyboard.getButtonIds();
         if (buttonIds == null) {
             return null;
@@ -61,7 +61,7 @@ public class KeyboardMarkUpService {
         }
     }
 
-    public List<List<InlineKeyboardButton>> getRowsKeyboard(int keyId, long chatId){
+    public List<List<InlineKeyboardButton>> getRowsKeyboard(int keyId, long chatId) {
 
         Keyboard keyboard = keyboardMarkUpRepository.findById(keyId);
         String[] rowIds = keyboard.getButtonIds().split(Const.SPLIT);
@@ -79,21 +79,18 @@ public class KeyboardMarkUpService {
 
                 buttonText = buttonText.length() < 64 ? buttonText : buttonText.substring(0, 64);
                 button.setCallbackData(buttonText);
-                if (buttonFromDb.getId() == 148){
+                if (buttonFromDb.getId() == 148) {
 //                    button.setSwitchInlineQuery("123");
                     button.setSwitchInlineQueryCurrentChat("set");
                     button.setCallbackData(null);
-                }
-                else if(buttonFromDb.getId() == 167){
+                } else if (buttonFromDb.getId() == 167) {
                     button.setCallbackData(String.valueOf(1));
-                }
-                else if(buttonFromDb.getId() == 168){
+                } else if (buttonFromDb.getId() == 168) {
                     button.setCallbackData(String.valueOf(2));
                 }
-                if(buttonFromDb.getId() == 169){
+                if (buttonFromDb.getId() == 169) {
                     button.setCallbackData(String.valueOf(3));
-                }
-                else if(buttonFromDb.getId()==8){
+                } else if (buttonFromDb.getId() == 8) {
                     button.setSwitchInlineQueryCurrentChat("spec");
                     button.setCallbackData(null);
                 }
@@ -105,7 +102,7 @@ public class KeyboardMarkUpService {
         return rows;
     }
 
-    private InlineKeyboardMarkup    getInlineKeyboard(String[] rowIds, int langId) {
+    private InlineKeyboardMarkup getInlineKeyboard(String[] rowIds, int langId) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         for (String buttonIdsString : rowIds) {
@@ -120,7 +117,7 @@ public class KeyboardMarkUpService {
                 if (url != null) {
                     button.setUrl(url);
                 } else {
-                    buttonText = buttonText.length() < 64 ? buttonText : buttonText.substring(0,64);
+                    buttonText = buttonText.length() < 64 ? buttonText : buttonText.substring(0, 64);
                     button.setCallbackData(buttonText);
                 }
                 row.add(button);
@@ -131,7 +128,7 @@ public class KeyboardMarkUpService {
         return keyboard;
     }
 
-    private ReplyKeyboard           getReplyKeyboard(String[] rows, int langId) {
+    private ReplyKeyboard getReplyKeyboard(String[] rows, int langId) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setResizeKeyboard(true);
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
@@ -148,7 +145,7 @@ public class KeyboardMarkUpService {
                 if (buttonFromDb.getRequestContact()) {
                     isRequestContact = true;
                 }
-                if(buttonFromDb.getId()==Const.REQUEST_LOCATION_BUTTON){
+                if (buttonFromDb.getId() == Const.REQUEST_LOCATION_BUTTON) {
                     button.setRequestLocation(true);
                 }
                 keyboardRow.add(button);
@@ -160,7 +157,7 @@ public class KeyboardMarkUpService {
         return replyKeyboardMarkup;
     }
 
-    public ReplyKeyboard  selectForEdition(long keyboardMarkUpId, Language language) {
+    public ReplyKeyboard selectForEdition(long keyboardMarkUpId, Language language) {
         if (keyboardMarkUpId < 0) {
             return new ReplyKeyboardRemove();
         }
@@ -168,10 +165,10 @@ public class KeyboardMarkUpService {
             return null;
         }
 
-        return getKeyboardForEdition(keyboardMarkUpRepository.findById((int)keyboardMarkUpId), language);
+        return getKeyboardForEdition(keyboardMarkUpRepository.findById((int) keyboardMarkUpId), language);
     }
 
-    private ReplyKeyboard           getKeyboardForEdition(Keyboard keyboard, Language language) {
+    private ReplyKeyboard getKeyboardForEdition(Keyboard keyboard, Language language) {
         String buttonIds = keyboard.getButtonIds();
         if (buttonIds == null) {
             return null;
@@ -180,7 +177,7 @@ public class KeyboardMarkUpService {
         return getInlineKeyboardForEdition(rows, language);
     }
 
-    private InlineKeyboardMarkup    getInlineKeyboardForEdition(String[] rowIds, Language language) {
+    private InlineKeyboardMarkup getInlineKeyboardForEdition(String[] rowIds, Language language) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         for (String buttonIdsString : rowIds) {
@@ -206,7 +203,7 @@ public class KeyboardMarkUpService {
     }
 
     public boolean isInline(long keyboardMarkUpId) {
-        return keyboardMarkUpRepository.findByIdAndInlineIsTrue((int)keyboardMarkUpId);
+        return keyboardMarkUpRepository.findByIdAndInlineIsTrue((int) keyboardMarkUpId);
     }
 
     public List<Button> getListForEdit(long keyId, int langId) {

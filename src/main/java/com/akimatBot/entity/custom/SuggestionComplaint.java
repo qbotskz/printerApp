@@ -12,7 +12,7 @@ import java.util.Date;
 public class SuggestionComplaint {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int     id;
+    private int id;
     private String text;
 
     @ManyToOne

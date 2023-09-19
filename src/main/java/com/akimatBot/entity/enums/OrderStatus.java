@@ -13,9 +13,9 @@ public enum OrderStatus {
     PRECHECK,
     DONE,
 
-    DELETED
+    DELETED,
 
-
+    NEW
 
 
 }

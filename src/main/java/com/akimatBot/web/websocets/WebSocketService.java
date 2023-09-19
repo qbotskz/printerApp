@@ -9,27 +9,21 @@ import com.akimatBot.repository.repos.OrderRepository;
 import com.akimatBot.repository.repos.PrintPrecheckRepo;
 import com.akimatBot.repository.repos.PropertiesRepo;
 import com.akimatBot.utils.DateUtil;
-import com.akimatBot.web.dto.OrderItemDTO;
 import com.akimatBot.web.dto.OrderItemDeleteDTO;
-import com.akimatBot.web.dto.PrintKitchenDTO;
 import com.akimatBot.web.dto.PrintPrecheckDTO;
-import com.akimatBot.web.websocets.entities.OrderItemDeleteEntity;
+import com.akimatBot.web.websocets.entities.KitchenPrintEntityRepo;
 import com.akimatBot.web.websocets.entities.OrderItemDeleteEntityRepo;
 import com.akimatBot.web.websocets.entities.PrintKitchenEntity;
-import com.akimatBot.web.websocets.entities.KitchenPrintEntityRepo;
-//import com.akimatBot.web.websocets.handlers.CancelOrderItemPrint;
-import com.akimatBot.web.websocets.handlers.KitchenPrint;
 import com.akimatBot.web.websocets.handlers.PaymentPrint;
-import com.akimatBot.web.websocets.handlers.PrecheckPrint;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.*;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,7 +64,7 @@ public class WebSocketService {
                 printKitchenEntity.setDeskNumber(orderRepository.getDeskNumberById(orderId));
                 printKitchenEntity.setWaiterName(orderRepository.getWaiterNameById(orderId));
                 printKitchenEntity.setHallName(orderRepository.getHallNameById(orderId));
-                printKitchenEntity =  kitchenPrintEntityRepo.save(printKitchenEntity);
+                printKitchenEntity = kitchenPrintEntityRepo.save(printKitchenEntity);
 
 //                WebSocketSession socketSession = WebSocketSessionManager.getSession(KitchenPrint.handlerId);
 //                if (socketSession!= null && socketSession.isOpen()) {
@@ -78,7 +72,6 @@ public class WebSocketService {
 //                }
 
             }
-
 
 
 //            Map<String, WebSocketSession> sessionMap = WebSocketSessionManager.sessions;
@@ -104,11 +97,11 @@ public class WebSocketService {
             printPrecheck.setHallName(foodOrder.getDesk().getHall().getName());
             printPrecheck.setDeskNumber(foodOrder.getDesk().getNumber());
             printPrecheckRepo.save(printPrecheck);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
     public void printPayment(long orderId) {
         try {
             FoodOrder foodOrder = orderRepository.findOrderById(orderId);
@@ -127,8 +120,7 @@ public class WebSocketService {
             } else {
                 log.error("Session is closed!!!");
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -152,8 +144,7 @@ public class WebSocketService {
 //                socketSession.sendMessage(new TextMessage(new Gson().toJson(orderItemDeleteEntity.getDTO())));
 //            }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

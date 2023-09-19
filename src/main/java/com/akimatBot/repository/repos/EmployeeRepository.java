@@ -1,7 +1,6 @@
 package com.akimatBot.repository.repos;
 
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.entity.standart.Button;
 import com.akimatBot.entity.standart.Employee;
 import com.akimatBot.entity.standart.Role;
 import com.akimatBot.entity.standart.User;
@@ -14,7 +13,9 @@ import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Employee findByCodeAndDeletedFalse(long code);
+
     Employee findByIdAndDeletedFalse(long id);
+
     boolean existsByCodeAndDeletedFalse(long code);
 
     Employee findByLoginAndDeletedFalse(String login);
@@ -22,7 +23,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("select user.roles from Employee user where user.login = ?1 and user.deleted = false")
     List<Role> getRoles(String login);
 
-    @Query( value = "select  count(ro) != 0 from employee_roles ro where ro.roles_id = (select r.id from role r where r.name = ?2)" +
+    @Query(value = "select  count(ro) != 0 from employee_roles ro where ro.roles_id = (select r.id from role r where r.name = ?2)" +
             "and ro.employee_id = (select u.id from employee u where u.code = ?1)", nativeQuery = true)
     boolean hasRoleByCode(long code, String roleName);
 

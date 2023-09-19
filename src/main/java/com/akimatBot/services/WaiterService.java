@@ -2,7 +2,10 @@ package com.akimatBot.services;
 
 import com.akimatBot.entity.enums.Language;
 import com.akimatBot.entity.standart.Employee;
-import com.akimatBot.repository.repos.*;
+import com.akimatBot.repository.repos.DeskRepo;
+import com.akimatBot.repository.repos.EmployeeRepository;
+import com.akimatBot.repository.repos.OrderRepository;
+import com.akimatBot.repository.repos.WaiterShiftRepo;
 import com.akimatBot.web.dto.WaiterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,14 +44,15 @@ public class WaiterService {
             waiterDTO.setChatId(user.getChatId());
             waiterDTO.setId(user.getId());
             return waiterDTO;
-        }return null;
+        }
+        return null;
     }
 
-    public List<WaiterDTO> getAllActiveWaiters(long chatId, Language language){
+    public List<WaiterDTO> getAllActiveWaiters(long chatId, Language language) {
         List<Employee> users = waiterShiftRepo.getActiveWaiters();
         List<WaiterDTO> waiterDTOList = new ArrayList<>();
 
-        for (Employee user : users){
+        for (Employee user : users) {
             if (user.getChatId() != chatId) {
                 waiterDTOList.add(getWaiterByUser(user));
             }
@@ -57,7 +61,7 @@ public class WaiterService {
         return waiterDTOList;
     }
 
-    private WaiterDTO getWaiterByUser(Employee user){
+    private WaiterDTO getWaiterByUser(Employee user) {
         if (user != null) {
             WaiterDTO waiterDTO = new WaiterDTO();
             waiterDTO.setName(user.getFullName());
@@ -65,10 +69,11 @@ public class WaiterService {
             waiterDTO.setCode(user.getCode());
             waiterDTO.setDesks(deskService.getAllActiveNotFull(user.getChatId()));
             return waiterDTO;
-        }return null;
+        }
+        return null;
     }
 
-    private WaiterDTO getFullWaiterByUser(Employee user){
+    private WaiterDTO getFullWaiterByUser(Employee user) {
         if (user != null) {
             WaiterDTO waiterDTO = new WaiterDTO();
             waiterDTO.setName(user.getFullName());
@@ -76,15 +81,16 @@ public class WaiterService {
             waiterDTO.setCode(user.getCode());
             waiterDTO.setDesks(deskService.getAllActive(user.getChatId(), Language.ru));
             return waiterDTO;
-        }return null;
+        }
+        return null;
     }
 
 
-    public List<WaiterDTO> getAllActiveWaiters(){
+    public List<WaiterDTO> getAllActiveWaiters() {
         List<Employee> users = waiterShiftRepo.getActiveWaiters();
         List<WaiterDTO> waiterDTOList = new ArrayList<>();
 
-        for (Employee user : users){
+        for (Employee user : users) {
             WaiterDTO waiterDTO = new WaiterDTO();
             waiterDTO.setName(user.getFullName());
             waiterDTO.setId(user.getId());
@@ -96,9 +102,6 @@ public class WaiterService {
 
         return waiterDTOList;
     }
-
-
-
 
 
     public WaiterDTO getOne(long chatId, Language language) {
@@ -115,7 +118,8 @@ public class WaiterService {
     public boolean existByCode(long code) {
         return employeeRepository.existsByCodeAndDeletedFalse(code);
     }
-    public WaiterDTO  getByCode(long code) {
+
+    public WaiterDTO getByCode(long code) {
         return this.getFullWaiterByUser(employeeRepository.findByCodeAndDeletedFalse(code));
     }
 

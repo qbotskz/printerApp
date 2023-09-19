@@ -2,17 +2,13 @@ package com.akimatBot.web.websocets.entities;
 
 import com.akimatBot.entity.custom.OrderItem;
 import com.akimatBot.entity.enums.Language;
-import com.akimatBot.web.dto.OrderItemDTO;
 import com.akimatBot.web.dto.OrderItemDeleteDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -37,7 +33,7 @@ public class OrderItemDeleteEntity {
     Date date;
     boolean printed;
 
-    public OrderItemDeleteDTO getDTO(){
+    public OrderItemDeleteDTO getDTO() {
         OrderItemDeleteDTO orderItemDeleteDTO = new OrderItemDeleteDTO();
 
         orderItemDeleteDTO.setId(this.id);

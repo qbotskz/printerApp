@@ -1,19 +1,18 @@
 package com.akimatBot.entity.custom;
 
 import com.akimatBot.repository.TelegramBotRepositoryProvider;
-import com.akimatBot.utils.DateUtil;
 import com.akimatBot.web.dto.ChequeDTO;
 import com.akimatBot.web.dto.PaymentDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 public class Cheque {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,8 +67,6 @@ public class Cheque {
 //    private Double change;
 
 
-
-
     //    @Getter
     @OneToMany(mappedBy = "cheque", fetch = FetchType.LAZY)
     private List<Payment> payments;
@@ -81,7 +78,7 @@ public class Cheque {
 
     public double getTotal() {
         Double ct = TelegramBotRepositoryProvider.getChequeRepo().getTotal(this.getId());
-        if (ct != null){
+        if (ct != null) {
             return ct;
         }
         return 0.0;
@@ -117,7 +114,8 @@ public class Cheque {
 //        this.total += total;
 //    }
 
-    public Cheque() {}
+    public Cheque() {
+    }
 
     public ChequeDTO getChequeDTO() {
         this.calculate();
@@ -145,7 +143,7 @@ public class Cheque {
     public double getChange() {
         double change = 0.0;
 
-        if (prepayment!= null && this.getCalculatedTotal() < prepayment.getAmount()){
+        if (prepayment != null && this.getCalculatedTotal() < prepayment.getAmount()) {
             prepayment.setChange(prepayment.getAmount() - this.getCalculatedTotal());
             TelegramBotRepositoryProvider.getPaymentRepo().save(prepayment);
         }
@@ -153,14 +151,14 @@ public class Cheque {
         if (prepayment != null) {
             change += prepayment.getChange();
         }
-        for (Payment payment : getPayments()){
+        for (Payment payment : getPayments()) {
             change += payment.getChange();
         }
         return change;
     }
 
-    private PaymentDTO getPrepaymentDTO(){
-        if (this.getPrepayment() != null){
+    private PaymentDTO getPrepaymentDTO() {
+        if (this.getPrepayment() != null) {
             return this.getPrepayment().getPaymentDTO();
         }
         return null;
@@ -203,14 +201,13 @@ public class Cheque {
 //        else forPayment =  this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
 //    }
     public double getForPayment() {
-        if (getPaymentsTotal() + getPrepaymentAmount() >  getCalculatedTotal()){
+        if (getPaymentsTotal() + getPrepaymentAmount() > getCalculatedTotal()) {
             return 0.0;
-        }
-        else return this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
+        } else return this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
     }
 
     private double getPrepaymentAmount() {
-        if (this.getPrepayment() != null){
+        if (this.getPrepayment() != null) {
             return getPrepayment().getAmount();
         }
         return 0.0;
@@ -219,12 +216,12 @@ public class Cheque {
     public double getCalculatedTotal() {
         double total = getTotal();
 
-        double calculatedTotal  = total - total*discount/100;
-        calculatedTotal += total * service/100;
+        double calculatedTotal = total - total * discount / 100;
+        calculatedTotal += total * service / 100;
         calculatedTotal += deliveryPrice;
         calculatedTotal -= usedCashback;
 
-        addedCashback = calculatedTotal * cashbackPercentage/100;
+        addedCashback = calculatedTotal * cashbackPercentage / 100;
 
         return calculatedTotal;
     }

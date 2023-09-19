@@ -1,6 +1,5 @@
 package com.akimatBot.entity.custom;
 
-import com.akimatBot.web.dto.PaymentTypeDTO;
 import com.akimatBot.web.dto.PaymentTypeReportDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

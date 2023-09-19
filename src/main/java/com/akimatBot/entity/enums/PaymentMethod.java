@@ -17,7 +17,7 @@ public enum PaymentMethod {
     private String nameKz;
 
     public String getName(int langId) {
-        if(langId==1){
+        if (langId == 1) {
             return nameRu;
         }
         return nameKz;

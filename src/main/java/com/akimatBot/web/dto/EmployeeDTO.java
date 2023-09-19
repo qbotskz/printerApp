@@ -11,13 +11,13 @@ import java.util.List;
 @Setter
 public class EmployeeDTO {
 
-    private long     id;
+    private long id;
 
-    private long        chatId;
-    private String      phone;
-    private String      fullName;
-    private String      position;
-    private Long      code;
+    private long chatId;
+    private String phone;
+    private String fullName;
+    private String position;
+    private Long code;
 
     Language language;
 

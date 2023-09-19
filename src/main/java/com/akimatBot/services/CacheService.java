@@ -7,7 +7,6 @@ import com.akimatBot.entity.enums.Language;
 import com.akimatBot.repository.repos.CacheRepo;
 import com.akimatBot.repository.repos.DeskRepo;
 import com.akimatBot.web.dto.DeskDTO;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,29 +29,29 @@ public class CacheService {
     @Autowired
     CacheRepo cacheRepo;
 
-    List<DeskDTO> getAllActive(long waiterChatId, Language language){
+    List<DeskDTO> getAllActive(long waiterChatId, Language language) {
         List<DeskDTO> deskDTOList = new ArrayList<>();
 
-        for (Desk desk : deskRepo.getActiveDesks(waiterChatId)){
+        for (Desk desk : deskRepo.getActiveDesks(waiterChatId)) {
             deskDTOList.add(desk.getDeskDTOFull(language, waiterChatId));
         }
 
         return deskDTOList;
     }
 
-    List<DeskDTO> getAllActiveNotFull(long waiterChatId){
+    List<DeskDTO> getAllActiveNotFull(long waiterChatId) {
         List<DeskDTO> deskDTOList = new ArrayList<>();
 
-        for (Desk desk : deskRepo.getActiveDesks(waiterChatId)){
+        for (Desk desk : deskRepo.getActiveDesks(waiterChatId)) {
             deskDTOList.add(desk.getDeskDTONotFull());
         }
 
         return deskDTOList;
     }
 
-    public Cache createFoodCategoriesCache(){
+    public Cache createFoodCategoriesCache() {
         Cache cache = cacheRepo.findByCacheType(CacheTypes.FOOD_CATEGORIES);
-        if (cache == null){
+        if (cache == null) {
             cache = new Cache();
             cache.setCacheType(CacheTypes.FOOD_CATEGORIES);
         }

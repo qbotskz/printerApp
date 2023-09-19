@@ -36,7 +36,7 @@ public class PrintKitchenEntity {
     String hallName;
     long deskNumber;
 
-    public PrintKitchenDTO getDTO(){
+    public PrintKitchenDTO getDTO() {
         PrintKitchenDTO printKitchenDTO = new PrintKitchenDTO();
 
         printKitchenDTO.setId(this.id);
@@ -54,15 +54,14 @@ public class PrintKitchenEntity {
         this.id = id;
     }
 
-    public static List<OrderItemDTO> getItemsStr(List<OrderItem> orderItems){
+    public static List<OrderItemDTO> getItemsStr(List<OrderItem> orderItems) {
         List<OrderItemDTO> dtos = new ArrayList<>();
-        for (OrderItem orderItem : orderItems){
+        for (OrderItem orderItem : orderItems) {
             dtos.add(orderItem.getOrderItemDTO(Language.en));
         }
         return dtos;
 //        return new Gson().toJson(dtos);
     }
-
 
 
 }

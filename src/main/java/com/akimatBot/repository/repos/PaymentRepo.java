@@ -1,8 +1,6 @@
 package com.akimatBot.repository.repos;
 
-import com.akimatBot.entity.custom.CartItem;
 import com.akimatBot.entity.custom.Cheque;
-import com.akimatBot.entity.custom.Food;
 import com.akimatBot.entity.custom.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

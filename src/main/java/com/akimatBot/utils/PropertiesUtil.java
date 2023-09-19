@@ -14,7 +14,9 @@ public class PropertiesUtil {
             Properties properties = new Properties();
             properties.load(stream);
             return properties.getProperty(key);
-        } catch (IOException e) { log.info("Can't get property for: " + key, e); }
+        } catch (IOException e) {
+            log.info("Can't get property for: " + key, e);
+        }
         return null;
     }
 }

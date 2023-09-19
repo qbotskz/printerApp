@@ -19,13 +19,14 @@ public class id020_review extends Command {
     private final ReviewRepository reviewRepository = TelegramBotRepositoryProvider.getReviewRepository();
     private Review review;
     private ButtonsLeaf buttonsLeaf;
+
     @Override
     public boolean execute() throws TelegramApiException, IOException, SQLException, Exception {
-        switch (waitingType){
+        switch (waitingType) {
             case START:
-                if(isButton(118)){
+                if (isButton(118)) {
                     deleteMessage(updateMessageId);
-                    sendMessageWithKeyboard("Главное меню",2);
+                    sendMessageWithKeyboard("Главное меню", 2);
                     return EXIT;
                 }
                 getGrade();
@@ -34,7 +35,7 @@ public class id020_review extends Command {
                 review.setUser(userRepository.findByChatId(chatId));
                 return COMEBACK;
             case GRADING:
-                if(hasCallbackQuery()){
+                if (hasCallbackQuery()) {
 
                     switch (getCallbackQuery().getData()) {
                         case "0":
@@ -58,10 +59,10 @@ public class id020_review extends Command {
                     return COMEBACK;
                 }
             case SET_TEXT:
-                if(hasCallbackQuery()){
+                if (hasCallbackQuery()) {
                     review.setReviewText(null);
                 }
-                if(update.hasMessage() && update.getMessage().hasText()){
+                if (update.hasMessage() && update.getMessage().hasText()) {
                     review.setReviewText(update.getMessage().getText());
                 }
                 review.setUploadedDate(new Date());
@@ -71,17 +72,19 @@ public class id020_review extends Command {
         }
         return false;
     }
-    private void getReviewText() throws TelegramApiException{
-         editMessageWithKeyboard(getText(82),updateMessageId ,23);
+
+    private void getReviewText() throws TelegramApiException {
+        editMessageWithKeyboard(getText(82), updateMessageId, 23);
     }
-    private void getGrade() throws TelegramApiException{
+
+    private void getGrade() throws TelegramApiException {
         List<String> list = new ArrayList<>();
         List<String> list2 = new ArrayList<>();
-        for(int i = 0;i<5;i++){
+        for (int i = 0; i < 5; i++) {
             list.add("⭐");
             list2.add(String.valueOf(i));
         }
-        buttonsLeaf = new ButtonsLeaf(list, list2, 5,5);
-        sendMessageWithKeyboard(getText(81) ,buttonsLeaf.getListButtonInline());
+        buttonsLeaf = new ButtonsLeaf(list, list2, 5, 5);
+        sendMessageWithKeyboard(getText(81), buttonsLeaf.getListButtonInline());
     }
 }

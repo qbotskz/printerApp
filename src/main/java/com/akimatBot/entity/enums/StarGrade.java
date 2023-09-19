@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public enum StarGrade {
 
-    ONE_STAR(1, "⭐"), TWO_STAR(2, "⭐⭐"), THREE_STAR(3,"⭐⭐⭐"), FOUR_STAR(4,"⭐⭐⭐⭐" ), FIVE_STAR(5, "⭐⭐⭐⭐⭐");
+    ONE_STAR(1, "⭐"), TWO_STAR(2, "⭐⭐"), THREE_STAR(3, "⭐⭐⭐"), FOUR_STAR(4, "⭐⭐⭐⭐"), FIVE_STAR(5, "⭐⭐⭐⭐⭐");
 
     private int id;
     private String star;

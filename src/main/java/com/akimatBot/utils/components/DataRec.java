@@ -13,9 +13,10 @@ import java.util.regex.Pattern;
 
 public class DataRec extends HashMap<String, Object> {
 
-    public DataRec() {}
+    public DataRec() {
+    }
 
-    public Object   getValue(String key) {
+    public Object getValue(String key) {
         Object value = this.get(key);
         if (value == null) {
             throw new IllegalArgumentException();
@@ -24,16 +25,16 @@ public class DataRec extends HashMap<String, Object> {
         }
     }
 
-    public boolean  hasValue(String key) {
+    public boolean hasValue(String key) {
         return this.containsKey(key) && this.get(key) != null;
     }
 
-    public DataRec  set(String key, Object value) {
+    public DataRec set(String key, Object value) {
         this.put(key, value);
         return this;
     }
 
-    public long     getLong(String key) {
+    public long getLong(String key) {
         Object object = this.get(key);
         if (object instanceof Integer) {
             return (long) ((Integer) object).intValue();
@@ -44,9 +45,9 @@ public class DataRec extends HashMap<String, Object> {
         } else if (object instanceof BigDecimal) {
             return ((BigDecimal) object).longValue();
         } else if (object instanceof String) {
-            String string   = object.toString().trim();
+            String string = object.toString().trim();
             Matcher mDouble = Pattern.compile("^-?\\d+\\.?(\\d+)?$").matcher(string);
-            Matcher mLong   = Pattern.compile("^-?\\d+$").matcher(string);
+            Matcher mLong = Pattern.compile("^-?\\d+$").matcher(string);
             if (mLong.matches()) {
                 return Long.parseLong(string);
             } else if (mDouble.matches()) {
@@ -59,23 +60,23 @@ public class DataRec extends HashMap<String, Object> {
         }
     }
 
-    public int      getInt(String key) {
+    public int getInt(String key) {
         Object object = this.get(key);
-        if(object instanceof Integer) {
-            return ((Integer)object).intValue();
-        } else if(object instanceof Long) {
+        if (object instanceof Integer) {
+            return ((Integer) object).intValue();
+        } else if (object instanceof Long) {
             return Integer.parseInt(object.toString());
-        } else if(object instanceof Double) {
-            return ((Double)object).intValue();
-        } else if(object instanceof BigDecimal) {
-            return ((BigDecimal)object).intValue();
-        } else if(object instanceof String) {
-            String string   = object.toString().trim();
+        } else if (object instanceof Double) {
+            return ((Double) object).intValue();
+        } else if (object instanceof BigDecimal) {
+            return ((BigDecimal) object).intValue();
+        } else if (object instanceof String) {
+            String string = object.toString().trim();
             Matcher mDouble = Pattern.compile("^-?\\d+\\.?(\\d+)?$").matcher(string);
-            Matcher mInt    = Pattern.compile("^-?\\d+$").matcher(string);
-            if(mInt.matches()) {
+            Matcher mInt = Pattern.compile("^-?\\d+$").matcher(string);
+            if (mInt.matches()) {
                 return Integer.parseInt(string);
-            } else if(mDouble.matches()) {
+            } else if (mDouble.matches()) {
                 return Double.valueOf(Double.parseDouble(string)).intValue();
             } else {
                 throw new NumberFormatException();
@@ -85,7 +86,7 @@ public class DataRec extends HashMap<String, Object> {
         }
     }
 
-    public boolean  getBoolean(String key) {
+    public boolean getBoolean(String key) {
         Object object = this.get(key);
         if (object instanceof Integer) {
             if (((Integer) object).intValue() == 0) {
@@ -122,8 +123,8 @@ public class DataRec extends HashMap<String, Object> {
                 throw new IllegalArgumentException();
             }
         } else if (object instanceof String) {
-            String string   = object.toString().trim();
-            byte var5       = -1;
+            String string = object.toString().trim();
+            byte var5 = -1;
             switch (string.hashCode()) {
                 case 3569038:
                     if (string.equals("true")) var5 = 1;
@@ -137,8 +138,8 @@ public class DataRec extends HashMap<String, Object> {
                 case 1:
                     return true;
                 default:
-                    string  = string.substring(0, 1);
-                    var5    = -1;
+                    string = string.substring(0, 1);
+                    var5 = -1;
                     switch (string.hashCode()) {
                         case 48:
                             if (string.equals("0")) var5 = 0;
@@ -162,7 +163,7 @@ public class DataRec extends HashMap<String, Object> {
         }
     }
 
-    public double   getDouble(String key) {
+    public double getDouble(String key) {
         Object object = this.get(key);
         if (object instanceof Double) {
             return ((Double) object).doubleValue();
@@ -186,7 +187,7 @@ public class DataRec extends HashMap<String, Object> {
         }
     }
 
-    public Date     getDate(String key) {
+    public Date getDate(String key) {
         Object object = this.get(key);
         if (object instanceof Date) {
             return (Date) object;
@@ -226,10 +227,10 @@ public class DataRec extends HashMap<String, Object> {
         }
     }
 
-    public String   getString(String key) {
-        Object object   = this.get(key);
-        String string   = object.toString().trim();
-        string          = string.replaceAll("'", "");
+    public String getString(String key) {
+        Object object = this.get(key);
+        String string = object.toString().trim();
+        string = string.replaceAll("'", "");
         return string;
     }
 }

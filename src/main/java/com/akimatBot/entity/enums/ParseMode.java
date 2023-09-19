@@ -1,6 +1,6 @@
 package com.akimatBot.entity.enums;
 
-public enum  ParseMode {
+public enum ParseMode {
 
     html, WITHOUT
 

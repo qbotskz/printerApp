@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController()
 @RequestMapping("/api/hall")
@@ -26,13 +25,13 @@ public class HallController {
     PropertiesRepo propertiesRepo;
 
     @GetMapping("/getAll")
-    public List<HallDTO> getAllHalls(){
+    public List<HallDTO> getAllHalls() {
         List<HallDTO> halls = new ArrayList<>();
-        for (Hall hall : hallRepo.findAll()){
+        for (Hall hall : hallRepo.findAll()) {
             halls.add(hall.getDTO());
         }
 
-        return halls ;
+        return halls;
     }
 
 }

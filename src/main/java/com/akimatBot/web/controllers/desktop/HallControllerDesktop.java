@@ -26,13 +26,13 @@ public class HallControllerDesktop {
 
 
     @GetMapping("/getAll")
-    public List<HallDTO> getAllHalls(){
+    public List<HallDTO> getAllHalls() {
         List<HallDTO> halls = new ArrayList<>();
-        for (Hall hall : hallRepo.findAll()){
+        for (Hall hall : hallRepo.findAll()) {
             halls.add(hall.getDTO());
         }
 
-        return halls ;
+        return halls;
     }
 
 }

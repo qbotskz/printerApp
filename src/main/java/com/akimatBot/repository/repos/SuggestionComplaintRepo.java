@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface SuggestionComplaintRepo extends JpaRepository<SuggestionComplaint, Integer> {
     SuggestionComplaint findSuggestionComplaintById(int id);
+
     List<SuggestionComplaint> findAllByAnsweredFalseAndAppealType(AppealType appealType);
+
     List<SuggestionComplaint> findAllByAnsweredTrueAndAppealType(AppealType appealType);
+
     List<SuggestionComplaint> findAllByUploadedDateBetween(Date start, Date end);
 }

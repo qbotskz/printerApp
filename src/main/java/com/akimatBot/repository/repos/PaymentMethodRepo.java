@@ -1,7 +1,6 @@
 package com.akimatBot.repository.repos;
 
 import com.akimatBot.entity.custom.PaymentMethod;
-import com.akimatBot.entity.custom.PaymentType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

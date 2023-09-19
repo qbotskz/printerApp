@@ -22,21 +22,22 @@ public class id060_exit_from_order extends Command {
         selectRejectionReason();
         return false;
     }
+
     private void selectRejectionReason() throws TelegramApiException {
-        List<String> list = new ArrayList<>(Arrays.asList(getButtonText(181),getButtonText(182), getButtonText(215)));
+        List<String> list = new ArrayList<>(Arrays.asList(getButtonText(181), getButtonText(182), getButtonText(215)));
         List<String> ids = new ArrayList<>(Arrays.asList("181", "182", "215"));
 
-        ButtonsLeaf stat = new ButtonsLeaf(list,list);
+        ButtonsLeaf stat = new ButtonsLeaf(list, list);
         String[] str = update.getCallbackQuery().getMessage().getText().split("\n");
         StringBuilder stringBuilder = new StringBuilder();
-        int i =0;
-        for(String s:str){
-            if(i==0){
+        int i = 0;
+        for (String s : str) {
+            if (i == 0) {
                 stringBuilder.append(String.format(getText(147), foodOrder.getId())).append("\n");
                 i++;
                 continue;
             }
-            if(i==str.length-1){
+            if (i == str.length - 1) {
                 break;
             }
             stringBuilder.append(s).append("\n");
@@ -46,15 +47,15 @@ public class id060_exit_from_order extends Command {
         editMessageWithKeyboard(update.getCallbackQuery().getMessage().getText(), updateMessageId, stat.getListButtonInline());
 
     }
-    public void parseOrder(){
+
+    public void parseOrder() {
         String[] myString = getCallbackQuery().getMessage().getText().split("\n");
         Pattern pattern = Pattern.compile("(?<=№|#).[0-9]+");
 
         Matcher matcher = pattern.matcher(myString[0]);
         int orderNum = -1;
-        if (matcher.find())
-        {
-            orderNum = Integer.parseInt(matcher.group(0).replaceAll("\\s+",""));
+        if (matcher.find()) {
+            orderNum = Integer.parseInt(matcher.group(0).replaceAll("\\s+", ""));
             System.out.println(orderNum);
         }
         foodOrder = orderRepository.findOrderById(orderNum);

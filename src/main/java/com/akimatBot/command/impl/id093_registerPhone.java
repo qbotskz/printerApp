@@ -12,9 +12,10 @@ import java.sql.SQLException;
 
 public class id093_registerPhone extends Command {
     private User user;
+
     @Override
     public boolean execute() throws TelegramApiException, IOException, SQLException, Exception {
-        switch (waitingType){
+        switch (waitingType) {
             case START:
 //                deleteMessage(updateMessageId);
                 getPhone();
@@ -36,8 +37,7 @@ public class id093_registerPhone extends Command {
                     sendMessage("Успешно сохранен");
                     return EXIT;
 
-                }
-                else {
+                } else {
                     sendMessage("ажмите на клавиатуру!");
                     return COMEBACK;
 
@@ -47,6 +47,7 @@ public class id093_registerPhone extends Command {
 
         return EXIT;
     }
+
     private int wrongData() throws TelegramApiException {
         return botUtils.sendMessage(Const.WRONG_DATA_TEXT, chatId);
     }
@@ -55,6 +56,7 @@ public class id093_registerPhone extends Command {
         wrongData();
         getPhone();
     }
+
     private int getPhone() throws TelegramApiException {
         return sendMessageWithKeyboard("Отправьте номер телефона!", 12);
     }
