@@ -21,7 +21,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     OrderItem getById(long id);
 //    List<OrderItem> findAllByGuestOrderByIdAscOrderItemStatusDesc(Guest guest);
 
-    @Query(value = "select * from order_item item where item.guest_id =?1 and item.order_item_status != 3 order by item.id asc, item.order_item_status desc", nativeQuery = true)
+    @Query(value = "select * from order_item item where item.guest_id =?1 and item.order_item_status != 3 and item.order_item_status != 4 order by item.id asc, item.order_item_status desc", nativeQuery = true)
     List<OrderItem> findAllByGuestOrderByIdAscOrderItemStatusDesc(long guest);
 
     @Query("select item from OrderItem item where item.guest.foodOrder.id = ?1 and item.orderItemStatus = 0")
