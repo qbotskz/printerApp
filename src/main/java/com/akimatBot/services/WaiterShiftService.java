@@ -21,40 +21,6 @@ public class WaiterShiftService {
     @Autowired
     EmployeeService employeeService;
 
-    @Autowired
-    GeneralShiftService generalShiftService;
-
-    public boolean openShift(long code) {
-
-        if (!waiterShiftRepo.existsByWaiterCodeAndClosingTimeIsNull(code) && generalShiftService.hasOpenedShift()) {
-            Employee user = employeeService.findByCode(code);
-            WaiterShift waiterShift = new WaiterShift();
-            waiterShift.setWaiter(user);
-            waiterShift.setOpeningTime(new Date());
-            waiterShift = waiterShiftRepo.save(waiterShift);
-
-            user.setCurrentShift(waiterShift);
-            employeeService.save(user);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean openShiftByChatId(long waiterChatId) {
-
-        if (!waiterShiftRepo.existsByWaiterChatIdAndClosingTimeIsNull(waiterChatId) && generalShiftService.hasOpenedShift()) {
-            Employee user = employeeService.findByChatId(waiterChatId);
-            WaiterShift waiterShift = new WaiterShift();
-            waiterShift.setWaiter(user);
-            waiterShift.setOpeningTime(new Date());
-            waiterShift = waiterShiftRepo.save(waiterShift);
-
-            user.setCurrentShift(waiterShift);
-            employeeService.save(user);
-            return true;
-        }
-        return false;
-    }
 
     public boolean closeShift(long code) {
 

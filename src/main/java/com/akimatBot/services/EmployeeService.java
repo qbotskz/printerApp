@@ -23,26 +23,6 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee getByChatId(long chatId) {
-        return employeeRepository.getByChatIdAndDeletedFalse(chatId);
-    }
-
-    //    public Integer     countUserByChatId(long chatId){
-//        return employeeRepository.countUserByChatId(chatId);
-//    }
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
-    }
-
-    //    public Employee findFirstByChatId(long chatId){
-//        return employeeRepository.findFirstByChatId(chatId);
-//
-//    }
-    public Employee findByPhone(String phone) {
-        return employeeRepository.findByPhoneAndDeletedFalse(phone);
-
-    }
-
     public Employee findByCode(Long code) {
         return employeeRepository.findByCodeAndDeletedFalse(code);
 
@@ -59,25 +39,6 @@ public class EmployeeService {
     }
 
 
-    public Language getLanguageByChatId(long chatId) {
-        return employeeRepository.getLanguageByChatId(chatId);
-    }
-
-    @Transactional
-    public void checkUser(long chatId) {
-        Employee user = this.findByChatId(chatId);
-        if (user == null) {
-            user = new Employee();
-            user.setChatId(chatId);
-            this.save(user);
-        }
-    }
-
-//    @Transactional
-//    public User findByCode(String code) {
-//        return userRepository.findByCode(code);
-//    }
-
     public Employee findByUsername(String username) {
         return employeeRepository.findByLoginAndDeletedFalse(username);
     }
@@ -91,11 +52,6 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void closeAllShifts() {
-        employeeRepository.closeAllShifts();
-    }
-
-    @Transactional
     public void setNullToShift(long code) {
         employeeRepository.setNullToShift(code);
     }
@@ -105,37 +61,10 @@ public class EmployeeService {
         employeeRepository.setNullToShiftByChatId(chatId);
     }
 
-    public String getNameByChatId(long chatId) {
-        return employeeRepository.getNameByChatId(chatId);
-    }
-
-    public String getNameByCode(long code) {
-        return employeeRepository.getNameByCode(code);
-    }
-
-    public List<RoleDTO> getRolesDTOByCode(long code) {
-        List<RoleDTO> dtos = new ArrayList<>();
-        for (Role role : employeeRepository.getRolesByCode(code)) {
-            dtos.add(role.getDTO());
-        }
-        return dtos;
-    }
 
     public boolean hasRoleByChatId(Long chatId, String roleName) {
         return employeeRepository.hasRoleByChatId(chatId, roleName);
 
-    }
-
-    public List<RoleDTO> getRolesDTOByChatId(long chatId) {
-        List<RoleDTO> dtos = new ArrayList<>();
-        for (Role role : employeeRepository.getRolesByChatId(chatId)) {
-            dtos.add(role.getDTO());
-        }
-        return dtos;
-    }
-
-    public boolean isExistsCode(long code) {
-        return employeeRepository.existsByCodeAndDeletedFalse(code);
     }
 
     public boolean hasCodeByChatId(Long chatId) {

@@ -201,9 +201,9 @@ public class Cheque {
 //        else forPayment =  this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
 //    }
     public double getForPayment() {
-        if (getPaymentsTotal() + getPrepaymentAmount() > getCalculatedTotal()) {
+        if (getPrepaymentAmount() > getCalculatedTotal()) {
             return 0.0;
-        } else return this.getCalculatedTotal() - getPaymentsTotal() - getPrepaymentAmount();
+        } else return this.getCalculatedTotal() - getPrepaymentAmount();
     }
 
     private double getPrepaymentAmount() {

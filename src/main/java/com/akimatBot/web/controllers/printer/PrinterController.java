@@ -1,9 +1,12 @@
 package com.akimatBot.web.controllers.printer;
 
 
+import com.akimatBot.entity.custom.FoodOrder;
 import com.akimatBot.entity.custom.PDFFilesToPrint;
 import com.akimatBot.entity.custom.PrintPayment;
 import com.akimatBot.entity.custom.PrintPrecheck;
+import com.akimatBot.entity.enums.OrderStatus;
+import com.akimatBot.repository.repos.OrderRepository;
 import com.akimatBot.repository.repos.PDFFilesToPrintRepo;
 import com.akimatBot.repository.repos.PrintPaymentRepo;
 import com.akimatBot.repository.repos.PrintPrecheckRepo;
@@ -36,6 +39,9 @@ import java.util.List;
 @RequestMapping("/api/printer")
 public class PrinterController {
 
+
+    @Autowired
+    OrderRepository orderRepository;
 
     @Autowired
     KitchenPrintEntityRepo kitchenPrintEntityRepo;
@@ -118,6 +124,9 @@ public class PrinterController {
         List<PrintPaymentDTO> dtos = new ArrayList<>();
         for (PrintPayment printPayment : printPayments) {
             dtos.add(printPayment.getDTO());
+            FoodOrder foodOrder = printPayment.getFoodOrder();
+            foodOrder.setOrderStatus(OrderStatus.DONE);
+            orderRepository.save(foodOrder);
         }
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
